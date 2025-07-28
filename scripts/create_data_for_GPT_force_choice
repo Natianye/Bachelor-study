@@ -1,0 +1,72 @@
+import pandas as pd
+import random
+import os
+
+# Load your CSV
+input_csv = os.path.abspath('./data/both_qa_for_power_point.csv')
+df = pd.read_csv(input_csv, encoding='latin-1')
+
+# Filter out rows where Human_Questions is exactly 'No'
+df = df[df['Human_Questions'].astype(str).str.strip().str.lower() != 'no']
+
+# Prepare lists to build the new DataFrames
+qa_id_list = []
+content_list = []
+questionA_list = []
+questionB_list = []
+questionA_source = []
+questionB_source = []
+
+for idx, row in df.iterrows():
+    questions = []
+    sources = []
+    # Split questions if there are multiple (assume ';' separated)
+    if pd.notnull(row['Human_Questions']):
+        human_qs = [q.strip() for q in str(row['Human_Questions']).split(';') if q.strip()]
+        questions.extend(human_qs)
+        sources.extend(['Human'] * len(human_qs))
+    if pd.notnull(row['gpt_41_gs_question']):
+        gpt_qs = [q.strip() for q in str(row['gpt_41_gs_question']).split(';') if q.strip()]
+        questions.extend(gpt_qs)
+        sources.extend(['GPT'] * len(gpt_qs))
+    
+    # Randomly select two different questions
+    if len(questions) >= 2:
+        selected_indices = random.sample(range(len(questions)), 2)
+    elif len(questions) == 1:
+        selected_indices = [0, 0]
+    else:
+        continue  # Skip if no questions available
+    
+    qA = questions[selected_indices[0]] if selected_indices[0] is not None else ''
+    qB = questions[selected_indices[1]] if selected_indices[1] is not None else ''
+    sA = sources[selected_indices[0]] if selected_indices[0] is not None else ''
+    sB = sources[selected_indices[1]] if selected_indices[1] is not None else ''
+    
+    qa_id_list.append(row['QA_id'])
+    content_list.append(row['content'])
+    questionA_list.append(qA)
+    questionB_list.append(qB)
+    questionA_source.append(sA)
+    questionB_source.append(sB)
+
+# First DataFrame
+df_questions = pd.DataFrame({
+    'QA_id': qa_id_list,
+    'content': content_list,
+    'questionA': questionA_list,
+    'questionB': questionB_list
+})
+
+# Second DataFrame
+df_source = pd.DataFrame({
+    'QA_id': qa_id_list,
+    'questionA': questionA_source,
+    'questionB': questionB_source
+})
+
+# Save the first DataFrame with questions
+df_questions.to_csv('questions_with_text.csv', index=False)
+
+# Save the second DataFrame with only sources
+df_source.to_csv('questions_with_source.csv', index=False)

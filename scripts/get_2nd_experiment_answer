@@ -1,0 +1,76 @@
+from pptx import Presentation
+import pandas as pd
+import os
+
+ppt_filename = './2nd experiment/2nd_experiment_10+_Sara.pptx'
+ppt_path = os.path.abspath(ppt_filename)
+csv_path = os.path.abspath('./2nd experiment/2nd_experiment_data.csv')
+
+# Extract respondent and base PowerPoint name
+basename = os.path.basename(ppt_filename).replace('.pptx', '')
+parts = basename.split('_')
+respondent = parts[-1]
+base_name = '_'.join(parts[:-1]) + '.pptx'
+
+print(f"Respondent: {respondent}")
+print(f"Base PowerPoint name: {base_name}")
+
+# Load and filter mapping
+df = pd.read_csv(csv_path)
+mapping = df[df['PowerPoint_Name'] == base_name].reset_index(drop=True)
+
+prs = Presentation(ppt_path)
+
+answers = []
+mapping_idx = 0  # Index for mapping rows
+
+for slide in prs.slides:
+    # Gather all text from the slide
+    texts = [shape.text for shape in slide.shapes if shape.has_text_frame]
+    full_text = "\n".join(texts)
+
+    # Check if this slide contains a question (look for "Question A" or "Question B")
+    if not any(("Question A" in text or "Question B" in text) for text in texts):
+        continue  # Skip slides without a question
+
+    if mapping_idx >= len(mapping):
+        print(f"Warning: More slides with questions than mapping rows. Skipping extra slides.")
+        break
+
+    # Extract the answer
+    answer = None
+    for text in texts:
+        if "Question A" in text and ("☒" in text or "[x]" in text or "x" in text[:3].lower()):
+            answer = "A"
+            break
+        elif "Question B" in text and ("☒" in text or "[x]" in text or "x" in text[:3].lower()):
+            answer = "B"
+            break
+
+    if answer is not None:
+        row = mapping.iloc[mapping_idx]
+        answers.append({
+            "PowerPoint_Name": row["PowerPoint_Name"],
+            "QA_id": row["QA_id"],
+            "question_A": row["question_A"],
+            "question_B": row["question_B"],
+            "selected": answer,
+            "respondent": respondent
+        })
+    else:
+        print(f"Warning: No marked answer found for slide mapped to QA_id={mapping.iloc[mapping_idx]['QA_id']}.")
+
+    mapping_idx += 1
+
+# Convert to DataFrame and add label
+answers_df = pd.DataFrame(answers)
+
+def resolve_label(row):
+    if pd.isna(row["selected"]):
+        return None
+    return row["question_A"] if row["selected"] == "A" else row["question_B"]
+
+answers_df["selected_human_like"] = answers_df.apply(resolve_label, axis=1)
+
+answers_df.to_csv("2nd_experiment_long_answers.csv",mode='a', header=False, index=False)
+print("✅ Saved answers in long format for respondent:", respondent)

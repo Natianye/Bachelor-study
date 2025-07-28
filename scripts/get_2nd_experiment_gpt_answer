@@ -1,0 +1,21 @@
+import pandas as pd
+
+# Load your files
+judgment_df = pd.read_csv('./GPT_humanlike_judgment_without_context.csv')
+source_df = pd.read_csv('./questions_with_source.csv') 
+# Merge on QA_id
+merged = pd.merge(judgment_df, source_df, on='QA_id', how='left')
+
+# Map the selection to source
+def get_selected_source(row):
+    if row['answer'] == 'A':
+        return row['questionA']
+    elif row['answer'] == 'B':
+        return row['questionB']
+    else:
+        return 'Unknown'
+
+merged['selected_source'] = merged.apply(get_selected_source, axis=1)
+
+# Save the new CSV
+merged.to_csv('GPT_humanlike_judgment_without_context_source.csv', index=False)

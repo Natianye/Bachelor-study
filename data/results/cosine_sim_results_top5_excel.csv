@@ -1,0 +1,2282 @@
+QA_id,Human_Cosine_Similarity,Synthetic_Cosine_Similarity,Human_Questions,Human_Answers,Human_Prediction,gpt_41_gs_question,gpt_41_gs_answer,Synthetic_Prediction
+1,0.8671335,0.679189,Can I make changes to improve the BayBE repo?,"# Contributing to BayBE
+
+**All contributions to BayBE are welcome!**
+
+... no matter if bug fixes, new features, or just typo corrections.
+
+To shorten the overall development and review process, this page contains are a
+few sections that can make your life easier.
+
+## General Workflow
+
+To implement your contributions in a local development environment,
+we recommend the following workflow:
+
+1. Clone a [fork](https://github.com/emdgroup/BayBE/fork) of the repository to
+   your local machine.
+2. Create and activate a virtual python environment using one of the supported
+   python versions.
+3. Change into the root folder of the cloned repository and install an editable version
+   including all development dependencies:
+   ```console
+   pip install -e '.[dev]'
+   ```
+4. Run our tests to verify everything works as expected:
+   ```console
+   pytest
+   ```
+5. Install our [pre-commit](https://pre-commit.com/) hooks:
+   ```console
+   pre-commit install
+   ```
+6. Create a new branch for your contribution:
+   ```console
+   git checkout -b <your_branch_name>
+   ```
+7. **Implement your changes.**
+8. Optional but recommended to prevent complaints from our CI pipeline:
+   **Test your code.**
+
+   There are several test environments you can run via `tox`, each corresponding to a
+   [developer tool]() in a certain Python version.
+   You can retrieve all available environments via `tox list`.
+   For more information, see our [README about tests](https://github.com/emdgroup/baybe/blob/main/tests/README.md).
+
+   For instance, running all code tests in Python 3.12 can be achieved via:
+   ```console
+   tox -e fulltest-py312
+   ```
+
+   Other tox tests that are useful to verify your work locally are `tox -e lint-py312`,
+   `tox -e mypy-py312` and `tox -e coretest-py312`.
+
+   If you want to challenge your machine, you can run all checks in all Python versions
+   in parallel via:
+   ```console
+   tox -p
+   ```
+
+   This can be considered the ultimate one-stop check to make sure your code is ready
+   for merge.
+9. Push the updated branch back to your fork:
+   ```console
+   git push origin
+   ```
+10. Open a pull request via GithubÃÂÃÂ¢ÃÂÃÂÃÂÃÂs web page.","Yes, you can make changes to improve the BayBE repo! **All contributions are welcome**, whether they are bug fixes, new features, or even typo corrections. The BayBE team encourages contributions and provides a recommended workflow to make the process smooth. Here’s how you can get started:
+
+1. **Fork and clone** the repository to your local machine.
+2. **Set up a virtual environment** and install the development dependencies.
+3. **Run tests** to ensure everything works as expected.
+4. **Install pre-commit hooks** to help maintain code quality.
+5. **Create a new branch** for your changes.
+6. **Implement your improvements** (code, documentation, etc.).
+7. **Test your changes** locally using tools like `pytest` and `tox`.
+8. **Push your branch** to your fork.
+9. **Open a pull request** on GitHub.
+
+You are also encouraged to keep the code well-integrated with the existing structure and to expose new public functionality in the appropriate namespaces. The maintainers use various developer tools (like ruff, mypy, pytest, tox, etc.) to ensure code quality, and your pull request will go through these checks.
+
+If your pull request needs to be synchronized with the latest changes from the main branch, rebasing is recommended to keep the commit history clean.
+
+**In summary:** Yes, you are welcome to make improvements to BayBE—just follow the contribution guidelines provided in the documentation!",How can I run all code tests for BayBE in Python 3.12?,Use the command tox -e fulltest-py312.,"To run all code tests for BayBE in Python 3.12, use the following command:
+
+```bash
+tox -e fulltest-py312
+```
+
+This will execute all code tests in the Python 3.12 environment."
+3,0.44655246,0.6162761,Do I have to install sphinx separately?,"No. If you follow the described contribution workflow, pre-commit will automatically trigger sphinx. Or you can Execute it  a specific one by using 
+tox -e  sphinx","No, you do not have to install Sphinx separately unless you specifically want to generate the documentation for BayBE yourself. Sphinx is included in the optional dependency group docs. If you want to work with the documentation, you can install BayBE with the docs dependencies using:
+
+```bash
+pip install 'baybe[docs]'
+```
+
+For general use of BayBE, installing Sphinx is not required.",What tool does BayBE use to detect vulnerabilities in dependencies?,pip-audit,BayBE uses pip-audit to detect vulnerabilities in dependencies.
+4,0.6956791,0.3604469,What are the attrs and cattrs libraries used for?,Attrs is used for class desing and attribute validation while cattrs is being used for object (de-)serialization.,"In BayBE, the attrs and cattrs libraries are used as follows:
+
+- **attrs**: This library is used to build most of BayBE's classes. It provides a lean and efficient way to design classes and validate their attributes. By using attrs, BayBE ensures clear and maintainable class definitions with built-in attribute validation.
+
+- **cattrs**: This library is used for (de-)serialization in BayBE. It separates object serialization (converting objects to and from formats like JSON or dictionaries) from the class design itself. This allows BayBE to handle data interchange and persistence cleanly and efficiently.
+
+In summary, attrs is for class design and attribute validation, while cattrs handles serialization and deserialization of those classes.",What library does BayBE use for property-based testing in its test suite?,hypothesis,BayBE uses the hypothesis library for property-based testing in its test suite.
+6,0.74054873,0.63287175,What is the rule to write docstrings?,"Our docstrings generally follow the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
+Basic style and consistency checks are automatically performed via [pre-commit](https://pre-commit.com/) during development and in our CI pipeline.
+
+Apart from that, we generally recommend adhering to the following guideline:
+
+- Each function should have a docstring containing:
+  * a short one-line summary at the top,
+  * an optional extended summary or description below and
+  * all relevant sections (`Args`, `Raises`, ...).
+- Use type hints (for variables/constants, attributes, function/method signatures, ...).
+  Avoid repeating type hints in docstrings.
+- When referencing objects (classes, functions, ...), use `:<key>:`path.to.function` ` where `<key>` is to be replaced with the
+  respective [role](https://www.sphinx-doc.org/en/master/usage/domains/python.html#cross-referencing-python-objects) (`class`, `func`, ...)
+- Use double backticks for literals like in ```MyString```.```","The rule to write docstrings in BayBE is as follows:
+
+- Docstrings should generally follow the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
+- Each function should have a docstring containing:
+  * A short one-line summary at the top,
+  * An optional extended summary or description below,
+  * All relevant sections (such as `Args`, `Raises`, etc.).
+- Use type hints in code (for variables, attributes, function/method signatures) and **avoid repeating type hints in docstrings**.
+- When referencing objects (like classes or functions), use the Sphinx cross-referencing syntax: `:<key>:`path.to.function``, where `<key>` is the appropriate role (e.g., `class`, `func`, etc.).
+- Use double backticks for literals, e.g., ``MyString``.
+- For `attrs` classes, place attribute docstrings below the attribute declaration (not in the class docstring), and separate different attributes with a blank line.
+- For default and validator methods in `attrs` classes, a one-line docstring suffices, but include a `Raises:` section if applicable.
+
+Additionally, style and consistency checks for docstrings are automatically performed via [pre-commit](https://pre-commit.com/) and in the CI pipeline.",What style guide do BayBE docstrings generally follow?,Google Python Style Guide,BayBE docstrings generally follow the Google Python Style Guide.
+8,0.88982505,0.78925264,Do I need to create a campaign to get recommendations?,"No, creating a campaign is not mandatory.
+BayBE offers two entry points for generating recommendations:
+
+* a stateful [`Campaign.recommend`]() method and
+* a stateless [`RecommenderProtocol.recommend`]() method.
+","No, you do **not** need to create a campaign to get recommendations in BayBE.
+
+BayBE offers two entry points for generating recommendations:
+
+1. **Stateful approach:** Using the `Campaign.recommend()` method, which is useful if you want to track experimentation progress and iteratively refine your design.
+2. **Stateless approach:** Using the `RecommenderProtocol.recommend()` method (e.g., `BotorchRecommender.recommend()`), which allows you to get recommendations directly by providing all necessary context (search space, objective, measurements) at call time, without maintaining any state.
+
+So, creating a campaign is not mandatory—you can choose the approach that best fits your workflow.",Is it necessary to create a campaign to get recommendations in BayBE?,"No, creating a campaign is not mandatory to get recommendations in BayBE.","No, it is not necessary to create a campaign to get recommendations in BayBE. BayBE offers two entry points for generating recommendations:
+
+1. **Stateless recommenders**: You can directly use a recommender’s `recommend()` method (such as `BotorchRecommender.recommend()`) by providing all the required context (search space, objective, measurements, etc.) at call time. This approach does not require creating a campaign and is suitable for single or batch recommendations without maintaining state.
+
+2. **Stateful campaigns**: Alternatively, you can create a `Campaign` object, which maintains the state of your experiments and allows you to iteratively add measurements and request new recommendations.
+
+So, creating a campaign is optional and only necessary if you want to manage an ongoing, stateful optimization process. For simple or one-off recommendations, you can use the stateless recommender interface without a campaign."
+9,0.77702445,0.78395545,"BayBE recommends A, but experimentalists do B. What now?","
+DonÃÂÃÂ¢ÃÂÃÂÃÂÃÂt panic and grab your towel. Recommendations from BayBE are just ... well,
+ÃÂÃÂ¢ÃÂÃÂÃÂÃÂrecommendationsÃÂÃÂ¢ÃÂÃÂÃÂÃÂ. The measurements you feed back to BayBE need not to be related to
+the original recommendation in any way. In fact, requesting recommendations and adding
+data are two separate actions, and there is no formal requirement to perform these
+actions in any particular order nor to ÃÂÃÂ¢ÃÂÃÂÃÂÃÂrespondÃÂÃÂ¢ÃÂÃÂÃÂÃÂ to recommendations in any form.
+
+Note, however, that subsequent recommendations **may** be affected by earlier steps in
+your campaign, depending on your settings for the
+`allow_recommending_already_measured` and
+`allow_recommending_already_recommended` flags.","Don’t worry! BayBE’s recommendations are just that—recommendations. You are not required to follow them exactly. The measurements you provide to BayBE do not need to be related to the original recommendation in any way. In fact, requesting recommendations and adding data are two separate actions, and you can perform them in any order you like. There is no formal requirement to “respond” to recommendations.
+
+However, keep in mind that future recommendations from BayBE **may** be influenced by your previous actions, depending on your settings for the `allow_recommending_already_measured` and `allow_recommending_already_recommended` flags.",Do I have to follow BayBE's recommendations exactly when running my experiments?,"No, there is no formal requirement to perform actions in response to BayBE's recommendations, and measurements you provide do not need to be related to the original recommendations.","No, you do **not** have to follow BayBE's recommendations exactly when running your experiments. BayBE's recommendations are just that—**recommendations**. The measurements you provide to BayBE do not need to be related to the original recommendation in any way. Requesting recommendations and adding data are two separate actions, and there is no formal requirement to perform these actions in any particular order or to ""respond"" to recommendations directly. However, keep in mind that future recommendations **may** be influenced by earlier steps in your campaign, depending on your settings (such as `allow_recommending_already_measured` and `allow_recommending_already_recommended`)."
+11,0.75492936,0.7695669,How to install BayBE from Github?,"```bash
+pip install git+https://github.com/emdgroup/baybe.git@main
+```","To install BayBE directly from GitHub, use the following command:
+
+```bash
+pip install git+https://github.com/emdgroup/baybe.git@main
+```
+
+This will install the latest commit from the main branch. If you want to install a specific commit or branch, replace main with the desired git reference.",How can I install the latest commit of BayBE from GitHub?,Run pip install git+https://github.com/emdgroup/baybe.git@main,"To install the latest commit of BayBE from GitHub, run the following command:
+
+```bash
+pip install git+https://github.com/emdgroup/baybe.git@main
+```"
+14,0.7342108,0.77468634,Does BayBE collect usage statistics?,"BayBE only collects usage statistics for employees of Merck KGaA, Darmstadt, Germany.","Yes, BayBE does collect anonymous usage statistics, but **only** for employees of Merck KGaA, Darmstadt, Germany and/or its affiliates. For all other users, the recording of metrics is turned off and is impossible due to a VPN block. The collected statistics do **not** include any recorded measurements, targets/parameters or their names, or any project information that could allow reconstruction of details. User and host machine names are anonymized using truncated hashing.
+
+You can always deactivate all telemetry by setting the environment variable BAYBE_TELEMETRY_ENABLED to false or off. For more details, you can consult the documentation or review the open-source code in the telemetry module.",How can I disable all telemetry in BayBE?,By setting the environment variable BAYBE_TELEMETRY_ENABLED to false or off.,"You can disable all telemetry in BayBE by setting the environment variable BAYBE_TELEMETRY_ENABLED to False or off. For example, before running your code, you can execute:
+
+```bash
+export BAYBE_TELEMETRY_ENABLED=False
+```
+
+or
+
+```bash
+export BAYBE_TELEMETRY_ENABLED=off
+```
+
+This will turn off all telemetry collection. For additional assurance, you can also uninstall internet-related packages such as opentelemetry and its dependencies from your environment, but this is not required—setting the environment variable is sufficient. For more details, see the [BayBE documentation on telemetry environment variables](https://emdgroup.github.io/baybe/stable/userguide/envvars.html#telemetry)."
+15,0.7858263,0.5039247,Which kinds of targets are supported by BayBE?,"BayBE supports numerical and binary targets with min, max, and match objectives as well as multi-target optimization via a Pareto approach or desirability scalarization.","BayBE supports the following kinds of targets:
+
+1. **Numerical Targets**:  
+   - These are for real-valued measurements, such as yield, temperature, or any continuous outcome.
+   - You can specify whether you want to **maximize** (MAX), **minimize** (MIN), or **match** a specific value for the target.
+   - Numerical targets can have **bounds** to constrain their values, and a **transformation** function (e.g., linear) can be applied, especially when bounds are set.
+   - They are the primary target type in BayBE and are used in both single and multi-objective optimization.
+
+2. **Binary Targets**:  
+   - BayBE supports binary targets (i.e., outcomes with two possible values, such as success/failure or yes/no).
+   - These can also be optimized for min, max, or match objectives.
+
+3. **Ordinal Categorical Targets (via NumericalTarget)**:  
+   - If your categorical target is **ordinal** (i.e., the categories have a natural order, like ""bad"", ""mediocre"", ""good""), you can model it as a NumericalTarget by assigning numeric values to each category and setting appropriate bounds.
+   - For example, categories ""bad"", ""mediocre"", and ""good"" could be represented as 1, 2, and 3, with bounds (1, 3).
+
+**Limitations:**  
+- **Non-ordinal categorical targets** (i.e., categories with no natural order) are not natively supported as targets in BayBE. Modeling such targets as numerical is not straightforward and is a current limitation.
+
+**Multi-target Support:**  
+- BayBE allows optimization with multiple targets using objectives like **ParetoObjective** or **DesirabilityObjective**, which can balance and combine several targets (numerical or binary).
+
+**Summary Table:**
+
+| Target Type                | Supported | Notes                                                                 |
+|----------------------------|-----------|-----------------------------------------------------------------------|
+| Numerical (continuous)     | Yes       | With min, max, match, bounds, and transformations                     |
+| Binary                     | Yes       | With min, max, match objectives                                       |
+| Ordinal categorical        | Yes*      | If mapped to numbers and treated as NumericalTarget                   |
+| Non-ordinal categorical    | No        | Not natively supported as targets (limitation)                        |
+
+*Yes, via mapping to numerical values.
+
+**References:**  
+See the documentation sections on [NumericalTarget](#numericaltarget), [",What type of optimization methods does BayBE offer for handling multiple targets in experiments?,Pareto optimization and desirability scalarization.,"BayBE offers specialized optimization methods for handling multiple (potentially conflicting) targets in experiments. Specifically, BayBE provides the following approaches:
+
+- **ParetoObjective**: This method is used for multi-objective optimization where the goal is to find a set of solutions that represent the best possible trade-offs between the different targets (i.e., the Pareto front). It is suitable when you want to consider all objectives simultaneously without aggregating them into a single score.
+
+- **DesirabilityObjective**: This approach allows you to define how the different targets should be balanced according to their desirability. It typically involves transforming each target into a desirability function (ranging from 0 to 1) and then combining them, often via a weighted geometric or arithmetic mean, to guide the optimization toward solutions that are desirable across all objectives.
+
+These methods allow users to specify additional settings, such as the relative importance or desired balance between targets, enabling flexible and effective multi-objective optimization within BayBE."
+16,0.6306503,0.7772362,Give me a code example on how to get started with BayBE,"```bash 
+pip installÃÂ baybeÃÂ 
+``` 
+### Defining the OptimizationObjective 
+InÃÂ BayBEÃÂ language, the `Yield`can be represented as a`NumericalTarget`, 
+which we wrap into a`SingleTargetObjective`: 
+```python 
+fromÃÂ baybe.targetsÃÂ importÃÂ NumericalTargetÃÂ 
+fromÃÂ baybe.objectivesÃÂ importÃÂ SingleTargetObjectiveÃÂ 
+
+target =ÃÂ NumericalTarget( 
+name=""Yield"", 
+mode=""MAX"", 
+) 
+objective=ÃÂ SingleTargetObjective(target=target) 
+```
+And addtionaly setup of campaign and syntax for recommendations","Certainly! Here’s a simple code example to help you get started with BayBE, based on the documentation:
+
+**1. Install BayBE**
+
+First, install BayBE using pip:
+
+```bash
+pip install baybe
+```
+
+**2. Basic Usage Example**
+
+Below is a minimal example of how you might set up and run a simple Bayesian optimization experiment with BayBE. This example assumes you want to optimize a function with one continuous parameter.
+
+```python
+from baybe import Experiment, Parameter, ContinuousParameter, Objective
+
+# Define the parameter space
+param = ContinuousParameter(
+    name=""x"",
+    lower=0.0,
+    upper=10.0
+)
+
+# Define the objective (the function you want to optimize)
+def my_objective(x):
+    # Example: simple quadratic function
+    return -(x - 5) ** 2 + 10
+
+# Wrap the objective in a BayBE Objective
+objective = Objective(
+    name=""score"",
+    minimize=False  # Set to True if you want to minimize
+)
+
+# Set up the experiment
+experiment = Experiment(
+    parameters=[param],
+    objectives=[objective]
+)
+
+# Suggest a new experiment point
+suggestion = experiment.suggest()
+
+# Evaluate your function at the suggested point
+x_val = suggestion[""x""]
+score = my_objective(x_val)
+
+# Register the result
+experiment.register(suggestion, {""score"": score})
+
+# Repeat as needed
+for _ in range(10):
+    suggestion = experiment.suggest()
+    x_val = suggestion[""x""]
+    score = my_objective(x_val)
+    experiment.register(suggestion, {""score"": score})
+
+# Get the best result
+best = experiment.get_best()
+print(""Best parameters found:"", best[""parameters""])
+print(""Best score:"", best[""objectives""][""score""])
+```
+
+**Note:**  
+- This is a simplified example. For more advanced use (e.g., categorical parameters, chemical encodings), see the BayBE documentation.
+- You can also use BayBE’s built-in support for chemical encodings and more complex experiment designs.
+
+**References:**  
+- [BayBE Documentation](https://github.com/emdgroup/baybe)
+- For more advanced examples, see the [examples directory](https://github.com/emdgroup/baybe/tree/main/examples) in the BayBE repository.",What Python command is used to install BayBE?,pip install baybe,"The Python command to install BayBE is:
+
+```bash
+pip install baybe
+```"
+17,0.7547681,0.6076786,How do I inform BayBE about the parameters we can tune to optimize our targets?,"This also involves specifying
+their values/ranges and other parameter-specific details.
+
+For our example, we assume that we can control three parameters ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ `Granularity`,
+`Pressure[bar]`, and `Solvent` ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ as follows:
+
+```python
+from baybe.parameters import (
+    CategoricalParameter,
+    NumericalDiscreteParameter,
+    SubstanceParameter,
+)
+
+parameters = [
+    CategoricalParameter(
+        name=""Granularity"",
+        values=[""coarse"", ""medium"", ""fine""],
+        encoding=""OHE"",  # one-hot encoding of categories
+    ),
+    NumericalDiscreteParameter(
+        name=""Pressure[bar]"",
+        values=[1, 5, 10],
+        tolerance=0.2,  # allows experimental inaccuracies up to 0.2 when reading values
+    ),
+    SubstanceParameter(
+        name=""Solvent"",
+        data={
+            ""Solvent A"": ""COC"",
+            ""Solvent B"": ""CCC"",  # label-SMILES pairs
+            ""Solvent C"": ""O"",
+            ""Solvent D"": ""CS(=O)C"",
+        },
+        encoding=""MORDRED"",  # chemical encoding via scikit-fingerprints
+    ),
+]
+```
+
+For more parameter types and their details, see the
+[parameters section](https://emdgroup.github.io/baybe/stable/userguide/parameters.html)
+of the user guide.
+
+Additionally, we can define a set of constraints to further specify allowed ranges and
+relationships between our parameters. Details can be found in the
+[constraints section](https://emdgroup.github.io/baybe/stable/userguide/constraints.html) of the user guide.
+In this example, we assume no further constraints.
+
+With the parameter definitions at hand, we can now create our
+`SearchSpace` based on the Cartesian product of all possible parameter values:
+
+```python
+from baybe.searchspace import SearchSpace
+
+searchspace = SearchSpace.from_product(parameters)
+```
+","To inform BayBE about the parameters you can tune (i.e., the variables you control in your experiment), you need to define a **search space**. The search space specifies all the tunable parameters, their types (e.g., continuous, categorical, integer), and their allowed ranges or values.
+
+While the provided context does not include the explicit code for defining a search space, in BayBE, this is typically done by creating a **SearchSpace** object and specifying each parameter as a **Parameter** (such as NumericalParameter, CategoricalParameter, etc.), along with their respective properties (like bounds or categories).
+
+**Example (typical usage):**
+```python
+from baybe.searchspace import SearchSpace
+from baybe.parameters import NumericalParameter, CategoricalParameter
+
+searchspace = SearchSpace(
+    parameters=[
+        NumericalParameter(name=""Pressure"", bounds=(1.0, 10.0), unit=""bar""),
+        CategoricalParameter(name=""Solvent"", categories=[""Solvent A"", ""Solvent B"", ""Solvent C"", ""Solvent D""]),
+        CategoricalParameter(name=""Granularity"", categories=[""fine"", ""medium"", ""coarse""]),
+    ]
+)
+```
+
+You then pass this `searchspace` object to the `Campaign` together with your objective and recommender:
+
+```python
+from baybe import Campaign
+
+campaign = Campaign(searchspace, objective, recommender)
+```
+
+**Summary:**  
+Define your tunable parameters by creating a `SearchSpace` object with the appropriate parameter definitions. This tells BayBE what variables it can adjust to optimize your targets.","What encoding method is used for the ""Granularity"" parameter in BayBE's search space definition?",One-hot encoding (OHE),"The encoding method used for the ""Granularity"" parameter in BayBE's search space definition is **one-hot encoding (OHE)**."
+19,0.6027707,0.6534189,What can we do with a campaign object?,"A campaign objects enables us to start the recommendation cycle.
+","With a campaign object in BayBE, you can:
+
+1. **Define and Document Experiments:**  
+   - The `Campaign` class provides a structured framework for defining and documenting your experimentation process, including what is being optimized (`Objective`) and which experimental factors can be altered (`SearchSpace`).
+
+2. **Handle Experimental Data:**  
+   - Add measurement results from your experiments to the campaign.
+   - Track the trajectory of your optimization process.
+
+3. **Get Recommendations:**  
+   - Request new candidate points to evaluate using the `recommend()` method.
+   - Control candidate selection in discrete spaces (e.g., allow or disallow recommending already measured or pending points).
+   - Benefit from caching of recommendations for efficiency.
+
+4. **Compute Acquisition Function Values:**  
+   - Use `acquisition_values()` to get individual acquisition values for candidates.
+   - Use `joint_acquisition_value()` to get the joint acquisition value for a batch.
+   - Optionally specify custom acquisition functions.
+
+5. **Serialization and Persistence:**  
+   - Serialize the campaign state to JSON with `to_json()` for long-term storage.
+   - Deserialize with `from_json()` to resume experimentation later.
+   - Create campaigns from a JSON config with `from_config()`, and validate configs with `validate_config()`.
+
+6. **Iterative Experimentation Workflow:**  
+   - Persist the campaign state, run real-world experiments, and continue the optimization process iteratively.
+
+In summary, a campaign object is the central interface for managing, progressing, and persisting your Bayesian optimization workflow in BayBE.",How do you add new experimental measurements to a BayBE campaign?,By using the add_measurements method on the campaign object.,"To add new experimental measurements to a BayBE campaign, you use the `add_measurements` method of the `Campaign` object. This method expects a pandas `DataFrame` containing the values of the experimental parameters and the corresponding target measurements.
+
+**Typical workflow:**
+
+1. **Obtain or create a DataFrame** with columns for all experimental parameters and at least one column for the measured target(s).  
+   - If you just received recommendations from `campaign.recommend()`, you can add a new column with your measured results to that DataFrame.
+2. **Call** `campaign.add_measurements(df)` to add your new data to the campaign.
+
+**Example:**
+
+```python
+# Suppose you have just received recommendations:
+df = campaign.recommend(batch_size=3)
+print(df)
+#    Granularity  Pressure[bar]    Solvent
+# 15      medium            1.0  Solvent D
+# 10      coarse           10.0  Solvent C
+# 29        fine            5.0  Solvent B
+
+# After running the experiments, add your measurements:
+df[""Yield""] = [79.8, 54.1, 59.4]
+campaign.add_measurements(df)
+```
+
+**Notes:**
+- You can add measurements at any time, and the data you add does not have to correspond to previous recommendations.
+- The DataFrame must include all required parameter columns and the target(s).
+- You can add measurements multiple times before requesting new recommendations.
+
+**Summary:**  
+Prepare a DataFrame with your experimental parameters and measured targets, then pass it to `campaign.add_measurements()`."
+20,0.7912607,0.7678017, Does BayBE have a special way to encode chemical substances?,"BayBE has built-in support for encoding chemical substances using chemical fingerprints, so it understands them beyond just names. You can see it from the study of Shields, B.J. et al.","Yes, BayBE has a special way to encode chemical substances. It provides a built-in parameter type called SubstanceParameter, which allows you to specify chemical substances using their SMILES representations. BayBE then automatically computes molecular descriptors (chemical fingerprints) for each substance using the [scikit-fingerprints](https://scikit-fingerprints.github.io/scikit-fingerprints/) package. These descriptors, such as ECFP, MORDRED, or RDKIT fingerprints, capture chemical similarity and properties much better than standard encodings like one-hot or integer encoding.
+
+This approach enables BayBE to use chemical knowledge in experimental design, making it especially suitable for optimizing experiments involving small molecules (e.g., solvents, ligands, bases). You can also customize the fingerprint computation and reduce descriptor dimensionality using the decorrelate option. For substances not well described by standard chemical descriptors (like polymers or mixtures), BayBE allows you to provide your own descriptors using the CustomDiscreteParameter.",What built-in feature does BayBE provide for encoding chemical substances in experiments?,Chemical encodings for substances are a special built-in case in BayBE.,"BayBE provides a **built-in feature called ""chemical encodings""** for encoding chemical substances in experiments. This is implemented via the `SubstanceParameter` class, which allows you to specify chemical substances using label-SMILES pairs. BayBE then automatically computes molecular descriptors (fingerprints) for each substance using the [scikit-fingerprints](https://scikit-fingerprints.github.io/scikit-fingerprints/) package. Supported encodings include popular fingerprints such as **MORDRED**, **ECFP**, and **RDKIT**.
+
+This approach enables BayBE to use chemical knowledge for better experimental design, going beyond traditional one-hot encoding of categorical parameters. The descriptors are decorrelated to avoid redundancy and improve model performance. This feature is especially useful for experiments involving small molecules, such as solvents, ligands, or reactants in chemical optimization campaigns. 
+
+**Note:** The `SubstanceParameter` and chemical encodings are only available if BayBE is installed with the additional `chem` dependency."
+21,0.56598186,0.59844446,I have issues installing BayBE on my Mac. How can I solve them? ,"heÃÂ issues oftencontain a reference to `semaphore`,ÃÂ e.g.`UserWarning:ÃÂ resource_tracker: There appear to be 1 leaked semaphore objects to clean up atshutdown`.WhileÃÂ we do not know the exact source of the problem, it seems to be related toÃÂ linkedlibrariesÃÂ that need to be compiled from source when no`macOS-arm64` binariesÃÂ areavailable. Packages that seem to have regular problems are `pymatgen` or `matminer`.""","If you are experiencing issues installing BayBE on your Mac, especially on macOS-arm64 systems (such as M1/M2 Macs), here are some steps and recommendations based on the BayBE documentation:
+
+### Known Issues on macOS-arm64
+
+- **Leaked Semaphore Warning:**  
+  You might encounter warnings like:  
+  ```
+  UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  ```
+  This issue is known to occur on M1/M2 Macs and seems related to certain linked libraries (e.g., `pymatgen`, `matminer`) that may not have pre-built binaries for macOS-arm64 and need to be compiled from source.
+
+### Recommended Solutions
+
+1. **Use a Clean Environment:**  
+   Install BayBE into a fresh, clean Python environment (e.g., using `venv` or `conda`) that does not have pre-existing packages installed. This helps avoid conflicts with previously installed dependencies.
+
+2. **Install BayBE First:**  
+   If you need other Python packages, install BayBE **before** installing any additional packages. This can help prevent dependency issues.
+
+3. **Installation Commands:**  
+   - From PyPI (recommended for most users):  
+     ```bash
+     pip install baybe
+     ```
+   - With optional dependencies (e.g., for cheminformatics and simulation features):  
+     ```bash
+     pip install 'baybe[chem,simulation]'
+     ```
+   - From GitHub (for the latest development version):  
+     ```bash
+     pip install git+https://github.com/emdgroup/baybe.git@main
+     ```
+   - From a local clone (for developers):  
+     ```bash
+     pip install -e .
+     ```
+
+4. **If Problems Persist:**  
+   - Try updating `pip`, `setuptools`, and `wheel` to the latest versions before installing:
+     ```bash
+     pip install --upgrade pip setuptools wheel
+     ```
+   - If you encounter issues with specific dependencies (like `pymatgen` or `matminer`), check if there are pre-built wheels available or consider using Rosetta 2 to run your environment in x86_64 mode as a workaround.
+
+5. **Further Troubleshooting:**  
+   - If you continue to experience issues, consult the BayBE [GitHub issues page](https://github.com/emdgroup/baybe/issues) or documentation for updates and possible workarounds.
+
+**Summary:**","What issue might BayBE users encounter when running on macOS-arm64 systems, especially with M1 chips?","Users may encounter leaked semaphore warnings, such as ""resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown"".","BayBE users running on macOS-arm64 systems, especially with M1 chips, might encounter runtime failures related to leaked semaphore objects. Specifically, they may see warnings such as:
+
+```
+UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+```
+
+This issue appears to be connected to linked libraries (like `pymatgen` or `matminer`) that need to be compiled from source when no `macOS-arm64` binaries are available. The exact source of the problem is not fully known. 
+
+**Tip:** To reduce the likelihood of this issue, install BayBE into a clean environment without pre-existing packages, and if you need other packages, install BayBE first."
+25,0.54817855,0.13643429,Who can I thank for this awesome package? ,"  - MartinÃÂ FitznerÃÂ (MerckÃÂ KGaA, Darmstadt, Germany), [Contact](mailto:martin.fitzner@merckgroup.com), [Github](https://github.com/Scienfitz)
+- Adrian ÃÂÃÂ oÃÂÃÂ¡iÃÂÃÂ (Merck Life ScienceÃÂ KGaA, Darmstadt, Germany), [Contact](mailto:adrian.sosic@merckgroup.com),[Github](https://github.com/AdrianSosic)
+- AlexanderÃÂ HoppÃÂ (MerckÃÂ KGaA, Darmstadt, Germany), [Contact](mailto:alexander.hopp@merckgroup.com), [Github](https://github.com/AVHopp)","You can thank the following contributors and maintainers for the BayBE package:
+
+**Contributors:**
+- Alex Lee (EMD Electronics, Tempe, Arizona, USA): Work on surrogate models
+- Daniel Weber (Merck KGaA, Darmstadt, Germany): Telemetry prototype
+- Emeline Sola (during an internship at Merck KGaA, Darmstadt, Germany): Auto-documentation of the examples
+- Sourabh Agrawal (Sigma-Aldrich Chemicals Private Limited): Initial implementation of additional surrogate models and clustering methods
+- Julie Fang (Merck Life Science KGaA, Darmstadt, Germany): Farthest point sampling
+- Roya Javadi (Vector Institute, Toronto, Canada): Import optimization, Polars implementations
+- Sterling Baird (Acceleration Consortium, Toronto, Canada): Documentation and general feedback
+- Rim Rihana (Merck KGaA, Darmstadt, Germany): Human readable output for search spaces
+- Di Jin (Merck Life Science KGaA, Darmstadt, Germany): Cardinality constraints
+- Julian Streibel (Merck Life Science KGaA, Darmstadt, Germany): Bernoulli multi-armed bandit and Thompson sampling
+- Karin Hrovatin (Merck KGaA, Darmstadt, Germany): scikit-fingerprints support
+- Fabian Liebig (Merck KGaA, Darmstadt, Germany): Benchmarking structure and persistence capabilities for benchmarking results
+- Alexander Wieczorek (Swiss Federal Institute for Materials Science and Technology, Dübendorf, Switzerland): SHAP explainers for insights
+
+**Maintainers:**
+- Martin Fitzner (Merck KGaA, Darmstadt, Germany) – [Contact](mailto:martin.fitzner@merckgroup.com), [Github](https://github.com/Scienfitz)
+- Adrian Šošić (Merck Life Science KGaA, Darmstadt, Germany) – [Contact](mailto:adrian.sosic@merckgroup.com), [Github](https://github.com/AdrianSosic)
+- Alexander Hopp (Merck KGaA, Darmstadt, Germany) – [Contact](mailto:alexander.hopp@merckgroup.com), [Github](https://github.com/AVHopp)
+
+A big thank you to all these individuals for their contributions to BayBE!",Who are the maintainers of BayBE?,"Martin Fitzner, Adrian Å oÅ¡iÄ, and Alexander Hopp.","Based on the provided context, the maintainers of BayBE are employees of Merck KGaA, Darmstadt, Germany and/or its affiliates. This is indicated by the telemetry section, which specifies that anonymous usage statistics are collected **only** for employees of Merck KGaA, Darmstadt, Germany and/or its affiliates."
+26,0.43264076,0.56454325,Who are the contributors of BayBE?,"# Contributors
+## Contributors
+
+- Alex Lee (EMD Electronics, Tempe, Arizona, USA):<br />
+  \\\\
+  Work on surrogate models
+- Daniel Weber (Merck KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Telemetry prototype
+- Emeline Sola (during an internship at Merck KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Auto-documentation of the examples
+- Sourabh Agrawal (Sigma-Aldrich Chemicals Private Limited):<br />
+  \\\\
+  Initial implementation of additional surrogate models and clustering methods
+- Julie Fang (Merck Life Science KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Farthest point sampling
+- Roya Javadi (Vector Institute, Toronto, Canada):<br />
+  \\\\
+  Import optimization, Polars implementations
+- Sterling Baird (Acceleration Consortium, Toronto, Canada):<br />
+  \\\\
+  Documentation and general feedback
+- Rim Rihana (Merck KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Human readable output for search spaces
+- Di Jin (Merck Life Science KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Cardinality constraints
+- Julian Streibel (Merck Life Science KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Bernoulli multi-armed bandit and Thompson sampling
+- Karin Hrovatin (Merck KGaA, Darmstadt, Germany):<br />
+  \\\\
+  `scikit-fingerprints` support
+- Fabian Liebig (Merck KGaA, Darmstadt, Germany):<br />
+  \\\\
+  Benchmarking structure and persistence capabilities for benchmarking results
+- Alexander Wieczorek (Swiss Federal Institute for Materials Science and Technology, DÃÂÃÂÃÂÃÂ¼bendorf, Switzerland):<br />
+  \\\\
+  SHAP explainers for insights","The provided context does not list the individual contributors of BayBE by name. However, it does state that **all contributions to BayBE are welcome**, including bug fixes, new features, and typo corrections. To see the actual list of contributors, you can visit the [BayBE GitHub repository](https://github.com/emdgroup/baybe), where contributors are typically listed in the repository's ""Contributors"" section.",Who contributed the Bernoulli multi-armed bandit and Thompson sampling to BayBE?,Julian Streibel,"Julian Streibel (Merck Life Science KGaA, Darmstadt, Germany) contributed the Bernoulli multi-armed bandit and Thompson sampling to BayBE."
+27,0.3943749,0.38029224,What legal rules I must follow when I use or distribute BayBE?,"Copyright 2022-2025 Merck KGaA, Darmstadt, Germany and/or its affiliates. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the ""License""); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.","The provided context does **not** include any information about the legal rules, license, or terms of use for BayBE. Therefore, based on the given documentation, **no specific legal rules or licensing requirements are mentioned** that you must follow when using or distributing BayBE.
+
+**Recommendation:**  
+To ensure you comply with all legal requirements, you should consult the official BayBE repository (such as its [GitHub page](https://github.com/emdgroup/baybe)) and look for a `LICENSE` file or relevant legal documentation. This will provide the definitive legal terms for use and distribution.
+
+**Summary:**  
+- The context does not specify legal rules or licensing.
+- Check the official BayBE repository for licensing information before use or distribution.",Under which license is BayBE distributed?,"Apache License, Version 2.0","The provided context does not specify the license under which BayBE is distributed. To find the exact license, you should consult the BayBE repository on GitHub or its official documentation."
+28,0.58453035,0.7918262,How can I make sure that my model learns as much as possible about a process? ,"Active learning can be seen as a special case of Bayesian optimization: If we have the above-mentioned criterion and set up a Bayesian optimizationcampaign to recommend points with the highest uncertainty, we achieve active learning via Bayesian optimization. In practice, this is procedure isimplemented by setting up a probabilistic model of our measurement process that allows us to quantify uncertainty in the form of a posterior distribution,from which we can then construct an uncertainty-based acquisition function to guide the exploration process.","To ensure your model learns as much as possible about a process in BayBE, you should consider the following best practices, based on the documentation:
+
+### 1. Use Active Learning
+- **Active learning** guides the selection of new experiments based on the current model’s uncertainty, rather than random selection.
+- By iteratively choosing experiments where the model is most uncertain, you efficiently explore the parameter space and gather the most informative data.
+- This is typically implemented via a probabilistic surrogate model (such as a Gaussian Process) and an uncertainty-based acquisition function.
+
+### 2. Leverage Transfer Learning (if you have related data)
+- If you have data from similar, but not identical, previous campaigns, **transfer learning** can accelerate learning in your current campaign.
+- In BayBE, transfer learning is enabled by using a surrogate model that supports it (e.g., `GaussianProcessSurrogate`) and introducing a [`TaskParameter`] to mark and align different campaign contexts.
+- This allows the model to learn relationships between current and past data, utilizing patterns from previous campaigns to inform the new one.
+
+### 3. Properly Set Up TaskParameter for Contexts
+- Use the [`TaskParameter`] to encode the context (e.g., reactor, substrate, cell line) of each experiment.
+- Specify all possible contexts via the `values` argument, and restrict new recommendations to the current context using `active_values`.
+- This ensures the model can learn from all available data while focusing new experiments on the relevant context.
+
+### 4. Ensure Data Quality and Relevance
+- Only include data from campaigns that are sufficiently similar (correlated) to your current one. Including uncorrelated or irrelevant data can **decrease** model performance.
+- If possible, use a preliminary correlation filter to select suitable past data for transfer learning.
+
+### 5. Use Suitable Surrogate Models
+- Choose a surrogate model that is appropriate for your problem and supports the features you need (e.g., transfer learning, multi-output).
+- For transfer learning, use models with the `supports_transfer_learning` attribute (e.g., `GaussianProcessSurrogate`).
+
+### 6. Provide Sufficient Data from the Ongoing Campaign
+- Transfer learning is not a zero-shot method: the model needs some data from the current campaign to learn how previous data relates to the new context.
+- Early data from the ongoing campaign is essential for effective information transfer.
+
+---
+
+**Summary:**  
+To maximize learning about your process in BayBE, use active learning to guide experiments,",What is active learning in the context of experiment selection for machine learning data acquisition?,"Active learning is a method where experiments are selected iteratively based on a criterion reflecting the current modelâs uncertainty, guiding data acquisition instead of choosing experiments randomly.","Active learning, in the context of experiment selection for machine learning data acquisition, is a guided approach to choosing which experiments to perform next, rather than selecting them randomly. The key idea is to iteratively select and measure new data points based on a criterion that reflects the current model’s uncertainty. By focusing on points where the model is most uncertain, active learning aims to efficiently improve the model with fewer experiments.
+
+In BayBE, active learning is implemented by setting up a probabilistic model of the measurement process, which quantifies uncertainty in the form of a posterior distribution. An uncertainty-based acquisition function is then constructed from this posterior to guide the exploration and selection of new experiments. This process can be seen as a special case of Bayesian optimization, where the acquisition function is designed to prioritize points with the highest predicted model uncertainty, thereby accelerating the learning process and making data acquisition more efficient."
+31,0.65896684,0.5354631,What can I do if some of my experiments are still running but I need new recommendations for additional experiments? ,"1. **Marking experiments as pending**: If an experiment is not completed (meaning at least one target is not yet measured), its data cannot be addedas a regular measurement. However, it can be marked as pending via `pending_experiments` in `recommend`.","If some of your experiments are still running but you need new recommendations for additional experiments, you can use BayBE’s **asynchronous workflow** features to handle this situation effectively. Specifically, you should use the **`pending_experiments`** keyword when requesting new recommendations.
+
+Here’s how you can proceed:
+
+1. **Mark Experiments as Pending:**  
+   When you request a new batch of recommendations, pass a DataFrame of the experiments that are still running (i.e., those whose measurements are not yet complete) as the `pending_experiments` argument. This tells BayBE that these experiments are already in progress, so it will avoid recommending them again.
+
+   **Example:**
+   ```python
+   # Assume rec_pending contains the experiments still running
+   rec_next = campaign.recommend(batch_size, pending_experiments=rec_pending)
+   ```
+
+2. **Why This Matters:**  
+   Without marking pending experiments, BayBE might recommend the same experiments again, since it is unaware that they are already being conducted. By marking them as pending, you ensure that each recommendation is unique and relevant.
+
+3. **Partial Results:**  
+   If any of your running experiments have partial results (i.e., some targets measured, others not), you can also add these as *partial measurements* to update the model with available data.
+
+**Summary:**  
+When you have ongoing experiments and need new recommendations, use the `pending_experiments` parameter in your `recommend` call to inform BayBE about the experiments that are still running. This will prevent duplicate recommendations and allow you to continue your experimental campaign efficiently.","What does it mean for an experiment to be marked as ""pending"" in BayBE's asynchronous workflows?",It means the experiment's measurement process has started but is not yet completed because at least one of the configured targets has not been measured.,"In BayBE's asynchronous workflows, marking an experiment as ""pending"" means that the experiment's measurement process has been started, but not yet completed at the time when the next set of recommendations is requested. This situation typically arises when at least one of the configured targets for the experiment has not yet been measured.
+
+By marking experiments as pending (using the `pending_experiments` keyword in recommendation requests), you inform BayBE that these experiments are already in progress and should not be recommended again, even though their results are not yet available. This helps prevent the algorithm from suggesting the same experiments multiple times while their outcomes are still being awaited.
+
+In summary, a ""pending"" experiment is one that is underway but not fully measured, and marking it as such ensures BayBE's recommendation engine accounts for these ongoing experiments in its planning."
+33,0.8370806,0.6455703,why can't I  add partial result to my experiment model?,"Adding Partial Results only works if the surrogate model uses a separate data basis
+for each target. This is e.g. the case if you use the
+[`CompositeSurrogate`](baybe.surrogates.composite.CompositeSurrogate)
+to enable multi-output modeling required by the 
+[`ParetoObjective`](baybe.objectives.pareto.ParetoObjective). For details, see 
+[multi-output modeling](multi_output_modeling).
+
+The [`DesirabilityObjective`](baybe.objectives.desirability.DesirabilityObjective) does 
+not currently utilize multi-output models and hence does not support partial results.","You cannot add partial results to your experiment model in BayBE if your surrogate model does **not** support using separate data for each target (i.e., does not support multi-output modeling with independent data per target). 
+
+Specifically:
+
+- **Partial results** (where only some targets are measured and others are missing/NaN) can only be used if your surrogate model supports fitting each target independently from the available data. This is the case, for example, when using the [`CompositeSurrogate`](baybe.surrogates.composite.CompositeSurrogate), which is required for multi-output modeling (such as with the [`ParetoObjective`](baybe.objectives.pareto.ParetoObjective)).
+- If you are using a surrogate model or objective that does **not** support this (such as the [`DesirabilityObjective`](baybe.objectives.desirability.DesirabilityObjective), which does not utilize multi-output models), then BayBE cannot handle partial results and will throw an error at runtime if you try to add them.
+- Internally, BayBE drops incomplete rows (with NaN targets) when fitting a surrogate for each target, but this only works if the surrogate is designed to handle separate data for each target.
+
+**In summary:**  
+You cannot add partial results if your surrogate model or objective does not support multi-output modeling with independent data per target. To use partial results, ensure you are using a compatible surrogate (like `CompositeSurrogate`) and objective (like `ParetoObjective`). Otherwise, you must wait until all targets are measured before adding results.",How can you indicate a target measurement that has not been measured yet in BayBE?,"By setting the target measurement value to NaN, pandas.NA, None, or float(""nan"").","In BayBE, you can indicate a target measurement that has not been measured yet by setting its value to a ""missing"" indicator such as:
+
+- numpy.nan
+- pandas.NA
+- None
+- float(""nan"")
+
+When you add measurements to BayBE, simply assign one of these values to the target(s) that have not been measured yet. For example:
+
+```python
+import numpy as np
+import pandas as pd
+
+measurements.loc[1, ""Target_2""] = np.nan  # not measured yet
+measurements.loc[2, ""Target_2""] = pd.NA   # not measured yet
+measurements.loc[2, ""Target_3""] = None    # not measured yet
+```
+
+BayBE will recognize these as missing values and handle them appropriately when fitting surrogate models (as long as your objective and surrogate support partial results)."
+38,0.7943166,0.7164593,Can I create a campaign from a JSON config?,"it is  possible to create a `Campaign` from a JSON configuration string via [`Campaign.from_config`]().
+Herein, the expected JSON schema of the string should mirror the class hierarchy of the objects nested in the corresponding campaign object.
+The string can be easily validated using [Campaign.validate_config]() without instantiating the object, which skips the potentially costly search space creation step.","Yes, you can create a campaign from a JSON config in BayBE. This is done using the `Campaign.from_config` method, which allows you to instantiate a `Campaign` object from a JSON configuration string. The JSON schema should mirror the class hierarchy of the objects nested in the campaign. You can also validate your JSON config using `Campaign.validate_config` before instantiating the object. This approach is useful for defining campaigns in a structured and reproducible way. For more details and examples, refer to the BayBE documentation.",How can you create a Campaign in BayBE without using the default constructor?,By using Campaign.from_config with a JSON configuration string.,"You can create a Campaign in BayBE without using the default constructor by using the **Campaign.from_config** method. This allows you to create a Campaign from a JSON configuration string that mirrors the class hierarchy of the objects nested in the campaign. Before instantiating the object, you can also validate the JSON string using **Campaign.validate_config**, which skips the potentially costly search space creation step. This approach is useful for configuring campaigns programmatically or loading them from external configuration files."
+39,0.61832,0.620495,Can I just run part of the recommend batch without harming my model? ,"This means that for two batches of different requested sizes, the smaller batch will not 
+necessarily correspond to a subset of the configurations contained in the larger batch. 
+An intuitive explanation for this phenomenon is that the more experiments one can 
+afford to run, the less need there is to focus on ""safe bets"" and the more room
+becomes available to test ""high-risk/high-gain"" configurations, since only one of the
+tested configurations from the batch has to perform well.","No, you should **not** run only part of a recommended batch if you want to maintain optimal model performance in BayBE.
+
+**Why?**  
+When you request a batch of recommendations (e.g., `campaign.recommend(batch_size=3)`), BayBE's recommender (specifically, the BotorchRecommender) **jointly optimizes** the entire batch. This means the recommended parameter configurations are selected together to maximize the expected information gain or objective, given that all will be run in parallel. The batch is **not** simply a list of the ""top N"" single best candidates; rather, the recommendations are tailored to the batch size and are designed to be run together.
+
+**If you only run a subset of the batch:**  
+- The subset is **not guaranteed** to be the best possible set for a smaller batch size.
+- The configurations in a batch of size N are **not** necessarily a subset of those in a batch of size M > N.
+- You may lose out on the intended exploration/exploitation trade-off, as the batch may include ""high-risk/high-gain"" candidates that make sense only in the context of the full batch.
+
+**Best practice:**  
+> You should always ask for exactly as many recommendations as you are willing to run parallel experiments in your next experimental iteration.
+
+**In summary:**  
+**Do not** take a larger batch and only run a subset. If you can only run, say, 2 experiments, request a batch of size 2. This ensures the recommendations are optimal for your available resources and will not harm your model's learning process.",Which recommender in BayBE is currently capable of joint optimization for batch recommendations?,BotorchRecommender,"The **BotorchRecommender** in BayBE is currently capable of joint optimization for batch recommendations. In continuous search spaces, it allows you to choose between greedy sequential optimization and batch (joint) optimization using its `sequential_continuous` flag. This enables the recommender to generate a batch of recommendations jointly, rather than one at a time."
+41,0.4955812,0.51647985,Are there any restrictions on the parameter values that I can add via the `add_measurements` method?,"For discrete parameters, the parameter values associated with the provided measurements are required to fall into a predefined tolerance interval by default, which is defined on the level of the individual parameters","Yes, there are restrictions on the parameter values you can add via the `add_measurements` method in BayBE:
+
+1. **Parameter Validity**: The values you add must correspond to the parameters defined in your campaign's search space. Each row in the DataFrame passed to `add_measurements` should provide valid values for all required parameters.
+
+2. **Respect Constraints**: If your campaign defines constraints (either discrete or continuous), the parameter values in your measurements must satisfy these constraints. For example, if you have a constraint that certain parameters must sum to 1.0 or that certain combinations are forbidden, your added measurements must adhere to these rules.
+
+3. **Parameter Types**: The values must match the expected type for each parameter (e.g., categorical, numerical, or substance parameters with valid labels/SMILES strings).
+
+4. **No Hybrid Constraints**: BayBE does not support constraints that operate on a mixed set of discrete and continuous parameters. If your measurements would violate this (e.g., by adding values that only make sense in a hybrid constraint), you need to rephrase your parameterization.
+
+5. **SubstanceParameter Specifics**: If you use `SubstanceParameter`, the values must be among the defined labels in the `data` dictionary, and the SMILES strings must be valid. Also, this parameter type is only available if BayBE was installed with the `chem` dependency.
+
+6. **Decorrelated Descriptors**: For parameters using molecular descriptors (e.g., `SubstanceParameter`), the descriptors are decorrelated before use, so only a subset of the calculated descriptors will be used for modeling.
+
+**Summary:**  
+You must ensure that all parameter values in the DataFrame passed to `add_measurements` are valid according to your campaign's parameter definitions and constraints. Invalid or out-of-domain values may result in errors or be ignored by BayBE.",What method is used to add experimental data during a BayBE campaign?,add_measurements,"The method used to add experimental data during a BayBE campaign is:
+
+**add_measurements**
+
+You use the Campaign object's add_measurements method to feed your measured results (experimental data) back into the campaign. For example:
+
+```python
+campaign.add_measurements(df)
+```
+
+Here, df is a DataFrame containing the experimental settings and the corresponding measured outcomes. This method updates the campaign's database with your new data."
+42,0.60363346,0.92274994,How can I make sure that all my experimental constraints are reflected in the campaign set-up? ,"Similar toÃÂ parameters,ÃÂ BayBEÃÂ distinguishes two families of constraints, derived from the abstract [`Constraint`]() class: discrete and
+continuous constraints ([`DiscreteConstraint`](), [`ContinuousConstraint`]()).
+A constraint is called discrete/continuous if it operates on a set of exclusively discrete/continuous parameters.","To ensure that all your experimental constraints are reflected in the campaign set-up in BayBE, you should:
+
+1. **Define Constraints When Creating the Search Space**  
+   - When you set up your `SearchSpace` for the campaign, include all relevant constraints as part of its definition.  
+   - BayBE supports two types of constraints:
+     - **Discrete constraints** (using `DiscreteConstraint`): For constraints involving only discrete parameters.
+     - **Continuous constraints** (using `ContinuousConstraint`): For constraints involving only continuous parameters.
+   - **Note:** BayBE does **not** currently support hybrid constraints (those involving both discrete and continuous parameters). If you need such a constraint, try to rephrase your parameterization so that each constraint applies to either only discrete or only continuous parameters.
+
+2. **Pass the Constrained Search Space to the Campaign**  
+   - When you create your `Campaign` object, pass the `SearchSpace` (with constraints included) as an argument:
+     ```python
+     campaign = Campaign(
+         searchspace=searchspace_with_constraints,
+         objective=objective,
+         recommender=recommender,  # optional
+     )
+     ```
+
+3. **Dynamic Exclusion for Discrete Candidates (Optional, During Campaign)**  
+   - If you need to exclude or include specific discrete parameter configurations dynamically while the campaign is running, use the `toggle_discrete_candidates()` method of the `Campaign` object.
+   - This allows you to adjust which discrete candidates are considered for recommendation as your experimentation progresses.
+   - **Note:** Dynamic exclusion is only available for discrete candidates. For continuous parameters, constraints must be set at creation.
+
+4. **Review and Update as Needed**  
+   - If your experimental constraints change, update your search space and constraints accordingly. For discrete spaces, you can use dynamic exclusion; for continuous spaces, you may need to redefine the search space.
+
+**Summary Table:**
+
+| Constraint Type      | How to Include in Campaign                |
+|----------------------|-------------------------------------------|
+| Discrete             | Use `DiscreteConstraint` in `SearchSpace` |
+| Continuous           | Use `ContinuousConstraint` in `SearchSpace`|
+| Hybrid (mixed)       | Not supported; rephrase as needed         |
+| Dynamic (discrete)   | Use `toggle_discrete_candidates()`        |
+
+**References:**  
+- [Constraints in BayBE](#constraints)
+- [Creating a Campaign](#creating-a-campaign)
+- [Dynamic Exclusion](#excluding-configurations)
+
+**",Does BayBE support hybrid constraints that operate on both discrete and continuous parameters?,"No, BayBE does not support hybrid constraints that operate on a mixed set of discrete and continuous parameters.","No, BayBE does **not** support hybrid constraints that operate on both discrete and continuous parameters. According to the documentation, constraints in BayBE must operate exclusively on either discrete or continuous parameters, but not a mix of both. If a hybrid constraint is necessary, the recommended approach is to rephrase the parameterization so that the parameter set is exclusively discrete or continuous."
+44,0.9151656,0.73220927,How do I avoid duplicated labels in several parameters?,"To avoid duplicated labels across several parameters in BayBE, you can use the DiscreteNoLabelDuplicatesConstraint. 
+```python
+from baybe.constraints import DiscreteNoLabelDuplicatesConstraint
+
+DiscreteNoLabelDuplicatesConstraint(parameters=[""Solvent_1"", ""Solvent_2""])
+```
+
+Without this constraint, combinations like below would be possible:
+
+|    | Solvent_1   | Solvent_2   | With DiscreteNoLabelDuplicatesConstraint   |
+|----|-------------|-------------|--------------------------------------------|
+|  1 | Water       | Water       | would be excluded                          |
+|  2 | THF         | Water       |                                            |
+|  3 | Octanol     | Octanol     | would be excluded                          |","To avoid duplicated labels in several parameters in BayBE, you should use the **DiscreteNoLabelDuplicatesConstraint**.
+
+This constraint ensures that, for a given set of parameters (for example, two solvents in a mixture), the same label/component cannot appear in more than one parameter at the same time. This is useful when you want to prevent combinations where, for example, both ""Solvent_1"" and ""Solvent_2"" are set to ""Water"".
+
+**Example usage:**
+
+```python
+from baybe.constraints import DiscreteNoLabelDuplicatesConstraint
+
+DiscreteNoLabelDuplicatesConstraint(parameters=[""Solvent_1"", ""Solvent_2""])
+```
+
+With this constraint, combinations like `(""Water"", ""Water"")` or `(""Octanol"", ""Octanol"")` for the two parameters would be excluded from the recommended experiments.
+
+**Summary:**  
+Use `DiscreteNoLabelDuplicatesConstraint` and specify the relevant parameters to ensure that no duplicated labels occur across them.",What does the DiscreteNoLabelDuplicatesConstraint prevent in BayBE experiments?,"It prevents duplicated labels or components in specified discrete parameters, such as having the same solvent appear in both Solvent_1 and Solvent_2.","The **DiscreteNoLabelDuplicatesConstraint** in BayBE prevents multiple discrete parameters from taking on the same label or value in a single experimental configuration. For example, if you have two parameters (such as ""Solvent_1"" and ""Solvent_2"") that can each be assigned a solvent from the same list (e.g., [""Water"", ""THF"", ""Octanol""]), this constraint ensures that both parameters cannot be assigned the same solvent in the same experiment. So, combinations like (""Water"", ""Water"") or (""Octanol"", ""Octanol"") would be excluded from the search space, ensuring that each label appears only once among the specified parameters in any given configuration."
+46,0.8669479,0.32006145,Can I create  a `SearchSpace` from multiple`DiscreteDependenciesConstraint`?,"BayBE requires that all dependencies are declared in a single
+`DiscreteDependenciesConstraint`. Creating a `SearchSpace` from multiple
+`DiscreteDependenciesConstraint`'s will throw a validation error.","No, you cannot create a `SearchSpace` from multiple `DiscreteDependenciesConstraint` objects in BayBE. **BayBE requires that all dependencies are declared in a single `DiscreteDependenciesConstraint`.** If you attempt to create a `SearchSpace` with multiple `DiscreteDependenciesConstraint`s, it will throw a validation error. All dependencies must be combined into one constraint object.",What happens if you create a SearchSpace from multiple DiscreteDependenciesConstraint objects in BayBE?,It will throw a validation error.,"If you create a SearchSpace from multiple DiscreteDependenciesConstraint objects in BayBE, **it will throw a validation error**. BayBE requires that all dependencies are declared in a single DiscreteDependenciesConstraint. Attempting to use more than one DiscreteDependenciesConstraint when constructing a SearchSpace is not allowed and will result in an error."
+47,0.7162273,0.63930625,"I already have a DiscreteDependenciesConstraint in my model, can I use another DiscreteDependenciesConstraint inside  DiscretePermutationInvarianceConstraint? ","Yes. If some of the `parameters` of the `DiscretePermutationInvarianceConstraint` are
+dependent on other parameters, we require that the dependencies are provided as a
+`DiscreteDependenciesConstraint` to the `dependencies` argument of the
+`DiscretePermutationInvarianceConstraint`. This
+`DiscreteDependenciesConstraint` will not count towards the maximum limit of one
+`DiscreteDependenciesConstraint.  The DiscretePermutationInvarianceConstraint below applies to our example and removes permutation-invariant combinations of solvents that have additional dependencies as well: from baybe.constraints import (
+    DiscretePermutationInvarianceConstraint,
+    DiscreteDependenciesConstraint,
+    ThresholdCondition,
+)
+
+DiscretePermutationInvarianceConstraint(
+    parameters=[""Solvent_1"", ""Solvent_2"", ""Solvent_3""],
+    # `dependencies` is optional; it is only required if some of the permutation
+    # invariant entries in `parameters` have dependencies on other parameters
+    dependencies=DiscreteDependenciesConstraint(
+        parameters=[""Fraction_1"", ""Fraction_2"", ""Fraction_3""],
+        conditions=[
+            ThresholdCondition(threshold=0.0, operator="">""),
+            ThresholdCondition(threshold=0.0, operator="">""),
+            ThresholdCondition(threshold=0.0, operator="">""),
+        ],
+        affected_parameters=[[""Solvent_1""], [""Solvent_2""], [""Solvent_3""]],
+    ),
+)","Yes, you can use another DiscreteDependenciesConstraint inside a DiscretePermutationInvarianceConstraint, specifically via the dependencies argument of DiscretePermutationInvarianceConstraint. This is required if some of the permutation-invariant parameters have dependencies on other parameters.
+
+**Important details from the documentation:**
+
+- If some of the parameters of the DiscretePermutationInvarianceConstraint are dependent on other parameters, you must provide those dependencies as a DiscreteDependenciesConstraint to the dependencies argument of the DiscretePermutationInvarianceConstraint.
+- This DiscreteDependenciesConstraint **does not count** towards the maximum limit of one DiscreteDependenciesConstraint in your model. In other words, you are allowed to have your main DiscreteDependenciesConstraint (as required by BayBE, only one at the top level), and you can also provide a separate DiscreteDependenciesConstraint as part of a DiscretePermutationInvarianceConstraint.
+- The documentation states:  
+  > This DiscreteDependenciesConstraint will not count towards the maximum limit of one DiscreteDependenciesConstraint discussed [here](#ddc).
+
+**Summary:**  
+You can have your main DiscreteDependenciesConstraint in your model, and also use a DiscreteDependenciesConstraint inside a DiscretePermutationInvarianceConstraint via its dependencies argument. This is the intended usage and does not violate BayBE's constraint rules.",What does the DiscretePermutationInvarianceConstraint do in BayBE?,"It enforces permutation invariance by ensuring that combinations of parameter values that are symmetric under permutation are treated as equivalent, reducing the search space accordingly.","The **DiscretePermutationInvarianceConstraint** in BayBE is used to enforce **permutation invariance** among a set of discrete parameters. This means that the order of the values assigned to these parameters does not matter—different permutations of the same set of values are considered equivalent and only one unique combination is kept in the search space.
+
+**Example Use Case:**  
+Suppose you are optimizing a mixture with three solvents, represented by parameters `""Solvent_1""`, `""Solvent_2""`, and `""Solvent_3""`. If the experiment's outcome depends only on which solvents are present, not on their order, then all permutations of these solvents should be treated as the same configuration. The DiscretePermutationInvarianceConstraint ensures that only one of these equivalent combinations is included in the search space, reducing redundancy and improving optimization efficiency.
+
+**Key Points:**
+
+- It operates on a set of discrete parameters whose order is irrelevant due to symmetry in the experiment.
+- It reduces the search space by removing redundant, permutation-equivalent parameter combinations.
+- If some of the parameters are only relevant under certain conditions (i.e., they have dependencies), you can specify these using a DiscreteDependenciesConstraint as part of the permutation invariance constraint.
+- Currently, BayBE's built-in surrogate models do not automatically account for permutation invariance during model fitting, but the constraint still affects the search space.
+
+**Summary:**  
+The DiscretePermutationInvarianceConstraint in BayBE ensures that all permutations of a specified set of discrete parameters are treated as equivalent, keeping only one representative combination in the search space. This is especially useful in experiments where the order of certain parameters does not affect the outcome."
+48,0.6830866,0.4318977,What are the keywords for setting the minimum and maximum cardinality when using the `DiscreteCardinalityConstraint`?,The keywords are `min_cardinality` and `max_cardinality`.,"The keywords for setting the minimum and maximum cardinality when using the `DiscreteCardinalityConstraint` are:
+
+- **min_cardinality** (defaults to 0)
+- **max_cardinality** (defaults to the number of affected parameters)
+
+Example usage:
+```python
+DiscreteCardinalityConstraint(
+    parameters=[""Fraction_1"", ""Fraction_2"", ""Fraction_3""],
+    min_cardinality=1,
+    max_cardinality=2,
+)
+```",What does the DiscreteCardinalityConstraint control in a BayBE design?,The number of active parameters.,"The **DiscreteCardinalityConstraint** in BayBE controls the number of active discrete parameters in your design. Specifically, it allows you to set minimum and maximum limits on how many parameters from a specified list can be ""active"" (i.e., selected or set to a particular value) in any given configuration. For example, if you have three discrete parameters and set `min_cardinality=1` and `max_cardinality=2`, BayBE will ensure that in each design, at least one and at most two of those parameters are active. This is useful for scenarios like mixture designs where only a subset of components should be present at a time."
+49,0.7311133,0.5187727,Is it possible to use serialization in a use case with custom constraints?,"Due to the arbitrary nature of code and dependencies that can be used in the `DiscreteCustomConstraint`, (de-)serializability cannot be guaranteed.","No, it is **not possible** to use serialization in a use case with custom constraints, specifically when using `DiscreteCustomConstraint`. According to the documentation:
+
+> Due to the arbitrary nature of code and dependencies that can be used in the `DiscreteCustomConstraint`, (de-)serializability cannot be guaranteed. As a consequence, using a `DiscreteCustomConstraint` results in an error if you attempt to serialize the corresponding object or higher-level objects containing it.
+
+This means that if your use case includes a custom constraint implemented via `DiscreteCustomConstraint`, you will **not** be able to serialize or deserialize the corresponding BayBE objects or any objects that contain them.",What happens if you try to serialize a BayBE DiscreteCustomConstraint object?,It results in an error because (de-)serializability cannot be guaranteed.,"If you try to serialize a BayBE DiscreteCustomConstraint object, you will encounter an error. This is because DiscreteCustomConstraint allows arbitrary custom code in its validator function, which makes (de-)serializability impossible to guarantee. As a result, attempting to serialize a DiscreteCustomConstraint or any higher-level object containing it will result in an error."
+57,0.9219004,0.7719591,Where is my cache folder? ,"
+By default,ÃÂ BayBEÃÂ determines the location of temporary files on your system and puts cached data into a subfolder `.baybe_cache` there. If you want tochange the location of the disk cache, change:
+
+```bash
+BAYBE_CACHE_DIR=""/path/to/your/desired/cache/folder""
+```","By default, BayBE stores cached data in a subfolder named .baybe_cache located in your system's temporary files directory. If you want to change the location of the cache folder, you can set the BAYBE_CACHE_DIR environment variable to your desired path. For example:
+
+```bash
+BAYBE_CACHE_DIR=""/path/to/your/desired/cache/folder""
+```
+
+If you set BAYBE_CACHE_DIR to an empty string (""""), disk caching will be turned off entirely.",How can I disable disk caching in BayBE?,"Set the environment variable BAYBE_CACHE_DIR to an empty string ("""").","To disable disk caching in BayBE, set the environment variable BAYBE_CACHE_DIR to an empty string. You can do this by running the following command in your terminal before starting BayBE:
+
+```bash
+export BAYBE_CACHE_DIR=""""
+```
+
+This will turn off disk caching entirely."
+60,0.6276797,0.56971633,Can I put constraints on the recommendation space? ,"There are several ways to do this, including usingÃÂ BayBEÃÂsÃÂ sophisticated [constraint machinery](constraints.md). Which approach is the right choice foryou depends on whether you want to exclude configurations *permanently* or (in-)activate them *dynamically* during your experimentation cycle.","Yes, you can put constraints on the recommendation space in BayBE.
+
+BayBE provides a flexible **constraint machinery** that allows you to exclude certain parameter configurations from being recommended. This can be done in several ways, depending on whether you want to exclude configurations **permanently** (for the entire experiment) or **dynamically** (during the experiment):
+
+### Permanent Exclusion
+
+- **When defining the SearchSpace:**  
+  You can add constraints when constructing your search space using the `constraints` keyword argument. For example:
+  ```python
+  constraints = [DiscreteExcludeConstraint([""p""], [SubSelectionCondition([""C""])])]
+  searchspace = SearchSpace.from_product(
+      parameters=[CategoricalParameter(""p"", [""A"", ""B"", ""C""])],
+      constraints=constraints
+  )
+  ```
+- **Restricting parameter values:**  
+  Use the `active_values` argument in parameter definitions to restrict which values are considered.
+- **Specifying allowed configurations:**  
+  Use `SearchSpace.from_dataframe()` to specify only the allowed configurations.
+
+### Dynamic Exclusion
+
+- **During a Campaign:**  
+  You can dynamically enable or disable specific discrete candidates using the `toggle_discrete_candidates()` method of a `Campaign` object while the campaign is running.
+  ```python
+  campaign.toggle_discrete_candidates(
+      pd.DataFrame({""p"": [""C""]}),
+      exclude=True,
+  )
+  ```
+  **Note:** Dynamic exclusion via toggling is only possible for discrete candidates. For continuous parameters, use continuous constraints when creating the search space.
+
+### Types of Constraints
+
+- **Discrete Constraints:**  
+  Operate on discrete parameters (e.g., categorical, ordinal).
+- **Continuous Constraints:**  
+  Operate on continuous parameters (e.g., floats).
+- **Hybrid Constraints:**  
+  Not currently supported (cannot mix discrete and continuous parameters in a single constraint).
+
+**Summary:**  
+You can and should use constraints to restrict the recommendation space in BayBE, either by permanently defining them in the search space or by dynamically toggling discrete candidates during a campaign. This helps ensure that only feasible or desirable configurations are recommended.",How can I exclude certain parameter configurations when getting recommendations in BayBE?,By using BayBEâs constraint machinery to exclude infeasible or undesirable configurations.,"You can exclude certain parameter configurations when getting recommendations in BayBE using several methods, depending on whether you want to exclude them permanently or dynamically:
+
+### 1. **Permanent Exclusion (Adjusting the SearchSpace)**
+
+This is done by modifying the `SearchSpace` object so that the excluded configurations are never considered for recommendations. There are several ways to do this:
+
+- **Restricting parameter values via `active_values`:**  
+  For label-like parameters, you can specify which values are ""active"" (i.e., eligible for recommendations), while still allowing measurements with the full set of values.
+  ```python
+  searchspace_reduced = TaskParameter(
+      ""p"", [""A"", ""B"", ""C""], active_values=[""A"", ""B""]
+  ).to_searchspace()
+  ```
+  > Note: This is different from defining the parameter with only `[""A"", ""B""]` as possible values, because the latter would make ""C"" undefined and prevent you from adding measurements with ""C"".
+
+- **Specifying a subset of configurations (discrete spaces only):**  
+  You can define the search space directly from a DataFrame listing only the allowed configurations.
+  ```python
+  searchspace_reduced = SearchSpace.from_dataframe(
+      pd.DataFrame({""p"": [""A"", ""B""]}),
+      parameters=[TaskParameter(""p"", [""A"", ""B"", ""C""])],
+  )
+  ```
+
+- **Filtering using constraints:**  
+  You can use BayBE’s constraint machinery to exclude specific configurations.
+  ```python
+  searchspace_reduced = SearchSpace.from_product(
+      parameters=[CategoricalParameter(""p"", [""A"", ""B"", ""C""])],
+      constraints=[DiscreteExcludeConstraint([""p""], [SubSelectionCondition([""C""])])],
+  )
+  ```
+
+- **Using specialized constructors:**  
+  For certain structured spaces (like simplices), you can use constructors like `from_simplex()`.
+
+### 2. **Dynamic Exclusion**
+
+If you want to exclude or re-include configurations dynamically during your experimentation cycle, you should use BayBE’s constraint system, which allows you to activate or deactivate constraints as needed.
+
+### **Summary Table**
+
+| Method                                 | Use Case                                      |
+|-----------------------------------------|-----------------------------------------------|
+| `active_values`                        | Exclude values but still allow measurements   |
+| `from_dataframe`                       | Specify allowed configurations directly       |
+| Constraints (e.g., `DiscreteExcludeConstraint`) | Exclude based on complex logic"
+64,0.6350914,0.7914628,How can I compute parameter importance?,"SHAP parameter importance can be computed with the factory methods `from_campaign()`, `from_surrogate()`, and `from_recommender()` as shown below: ```python  ÃÂ  ```","To compute parameter importance in BayBE, you can use the **SHAPInsight** class, which leverages SHAP (Shapley Additive Explanations) and similar explainers to analyze the importance of parameters in your Bayesian optimization campaign. Here’s how you can do it:
+
+### 1. Install Required Dependencies
+
+First, make sure you have installed BayBE with the insights dependencies:
+
+```bash
+pip install baybe[insights]
+```
+
+---
+
+### 2. Obtain a SHAPInsight Object
+
+You can create a SHAPInsight object in several ways, depending on what you have available:
+
+#### a) From a Campaign
+
+If you have a `Campaign` object:
+
+```python
+from baybe.insights import SHAPInsight
+
+insight = SHAPInsight.from_campaign(campaign)
+```
+
+#### b) From a Surrogate Model
+
+If you have a surrogate model and data:
+
+```python
+insight = SHAPInsight.from_surrogate(surrogate, data)
+```
+
+#### c) From a Recommender
+
+If you have a recommender with an underlying surrogate model:
+
+```python
+insight = SHAPInsight.from_recommender(recommender, searchspace, objective, data)
+```
+
+---
+
+### 3. Choose the Explainer (Optional)
+
+By default, SHAPInsight uses the SHAP KernelExplainer. You can specify a different explainer (e.g., LIME) if desired:
+
+```python
+insight = SHAPInsight.from_campaign(
+    campaign, explainer_cls=""LimeTabular""
+)
+```
+
+---
+
+### 4. Use Computational Representation (Optional)
+
+If you want to analyze the computational (numeric) representation of your parameters (useful for categorical/descriptive features):
+
+```python
+insight = SHAPInsight.from_campaign(campaign, use_comp_rep=True)
+```
+
+---
+
+### 5. Visualize Parameter Importance
+
+You can plot the parameter importance as a bar chart:
+
+```python
+insight.plot(""bar"")
+```
+
+---
+
+### Summary
+
+**In short:**  
+- Use `SHAPInsight.from_campaign(campaign)` (or the other constructors) to create an insight object.
+- Optionally, set `explainer_cls` and `use_comp_rep` as needed.
+- Call `.plot(""bar"")` to visualize parameter importance.
+
+This will show you which parameters are most influential in your experimental results, helping you understand and optimize your campaign more effectively.",How can you obtain a SHAPInsight from a Campaign in BayBE?,By using SHAPInsight.from_campaign(campaign).,"You can obtain a SHAPInsight from a Campaign in BayBE using the SHAPInsight.from_campaign() method. Here’s how you do it:
+
+```python
+from baybe.insights import SHAPInsight
+
+insight = SHAPInsight.from_campaign(campaign)
+```
+
+- This will analyze the parameter importance using the measurements already stored in the campaign.
+- Optionally, you can specify additional arguments, such as the explainer type (e.g., ""KernelExplainer"") or whether to use the computational representation (use_comp_rep=True):
+
+```python
+insight = SHAPInsight.from_campaign(campaign, explainer_cls=""KernelExplainer"", use_comp_rep=True)
+```
+
+In summary:  
+**Use `SHAPInsight.from_campaign(campaign)` to obtain a SHAPInsight from a Campaign in BayBE.**"
+67,0.8335308,0.40804225,Is it possible to use SHAP explainer for non-numerical parameter?,"SHAP explainers generally require numeric input and cannot directly handle non-numerical parameters. However, in BayBE, you can analyze non-numerical parameters by using their numeric computational representation.  A feature importance study can still be performed by looking at the computational representation of the data points, activated by the `use_comp_rep` flag. Since all
+entries in this representation are numeric by construction, there are no limitations on the explainer type used. A study of the computational representation might also be useful if a deeper analysis of descriptors used is of interest to the user. In general, for each non-numerical parameter in the experimental representation, there will be several descriptors the computational representation:
+```python
+insight = SHAPInsight.from_campaign(campaign, use_comp_rep=True)
+insight.plot(""bar"")
+```
+In addition to SHAP-based explainers, we also support [LIME](https://arxiv.org/abs/1602.04938) and [MAPLE](https://papers.nips.cc/paper_files/paper/2018/hash/b495ce63ede0f4efc9eec62cb947c162-Abstract.html) variants. For example:
+```python
+insight = SHAPInsight.from_campaign(
+    campaign, explainer_cls=""LimeTabular"", use_comp_rep=True
+)
+insight.plot(""bar"")
+```","By default, SHAPInsight analyzes the experimental representation of measurements, which may include non-numerical parameters (such as categorical variables). However, this comes with certain limitations: not all SHAP explainers can handle non-numerical features directly.
+
+To overcome this, BayBE allows you to analyze the **computational representation** of the data by setting the `use_comp_rep` flag to `True` when creating the SHAPInsight. In the computational representation, all parameters (including originally non-numerical ones) are converted into numeric descriptors, making them compatible with SHAP explainers.
+
+**In summary:**  
+- **Directly (experimental representation):** SHAP explainers may be limited with non-numerical parameters.
+- **Via computational representation:** Yes, it is possible to use SHAP explainers for non-numerical parameters, because they are transformed into numeric descriptors.
+
+**Example:**
+```python
+insight = SHAPInsight.from_campaign(campaign, use_comp_rep=True)
+insight.plot(""bar"")
+```
+
+This approach enables SHAP-based feature importance analysis even when your original parameters are non-numerical.",What flag should be set to analyze the computational representation of data points in SHAPInsight?,use_comp_rep,"To analyze the computational representation of data points in SHAPInsight, you should set the `use_comp_rep` flag to `True`. For example:
+
+```python
+insight = SHAPInsight.from_campaign(campaign, use_comp_rep=True)
+```"
+69,0.86825216,0.5773512,How do I combine multiple targets?,"The [`DesirabilityObjective`]() enables the combination of multiple targets via scalarization into a single numerical
+value (commonly referred to as the *overall desirability*), a method also utilized in classical DOE.
+
+Besides the list of [`Targets`]() to be scalarized, this objective type takes two additional optional parameters that let us control its behavior:
+* `weights`: Specifies the relative importance of the targets in the form of a sequence of positive numbers, one for each target considered
+  **Note:**
+  BayBE automatically normalizes the weights, so only their relative scales matter.
+* `scalarizer`: Specifies the [scalarization function]() to be used for combining the normalized target values.
+  The choices are `MEAN` and `GEOM_MEAN`, referring to the arithmetic and geometric mean, respectively.
+
+In the example below, we consider three different targets (all associated with a different goal) and give twice as much importance to the first target relative to each of the other two:
+```python
+from baybe.targets import NumericalTarget
+from baybe.objectives import DesirabilityObjective
+
+target_1 = NumericalTarget(name=""t_1"", mode=""MIN"", bounds=(0, 100))
+target_2 = NumericalTarget(name=""t_2"", mode=""MIN"", bounds=(0, 100))
+target_3 = NumericalTarget(name=""t_3"", mode=""MATCH"", bounds=(40, 60))
+objective = DesirabilityObjective(
+    targets=[target_1, target_2, target_3],
+    weights=[2.0, 1.0, 1.0],  # optional (by default, all weights are equal)
+    scalarizer=""GEOM_MEAN"",  # optional
+)
+```","To combine multiple targets in BayBE, you should use the **DesirabilityObjective**. This objective allows you to aggregate several targets into a single scalar value (the overall desirability) by normalizing and scalarizing their values.
+
+**Here’s how to do it:**
+
+1. **Define each target** as a `NumericalTarget` (or other supported target type), specifying their `mode` (e.g., ""MIN"", ""MAX"", or ""MATCH"") and **bounds** (required for combining targets, as normalization is needed).
+
+2. **Create a DesirabilityObjective** by passing the list of targets to it. You can also specify:
+   - `weights`: (optional) A list of positive numbers indicating the relative importance of each target. BayBE will normalize these weights automatically.
+   - `scalarizer`: (optional) Choose how to combine the normalized targets: `""MEAN""` (arithmetic mean) or `""GEOM_MEAN""` (geometric mean).
+
+**Example:**
+
+```python
+from baybe.targets import NumericalTarget
+from baybe.objectives import DesirabilityObjective
+
+target_1 = NumericalTarget(name=""t_1"", mode=""MIN"", bounds=(0, 100))
+target_2 = NumericalTarget(name=""t_2"", mode=""MIN"", bounds=(0, 100))
+target_3 = NumericalTarget(name=""t_3"", mode=""MATCH"", bounds=(40, 60))
+
+objective = DesirabilityObjective(
+    targets=[target_1, target_2, target_3],
+    weights=[2.0, 1.0, 1.0],      # optional: target_1 is twice as important
+    scalarizer=""GEOM_MEAN"",       # optional: use geometric mean
+)
+```
+
+**Important notes:**
+- All targets must have `bounds` specified to enable normalization.
+- If you only have one target, you can use `SingleTargetObjective` or simply pass the target directly.
+
+**Summary:**  
+To combine multiple targets, define them with bounds and use `DesirabilityObjective` to aggregate them, optionally adjusting weights and scalarization method as needed.",What scalarization functions are available in BayBE's DesirabilityObjective for combining multiple targets?,MEAN and GEOM_MEAN,"In BayBE's **DesirabilityObjective**, there are two available scalarization functions for combining multiple targets:
+
+1. **MEAN**: This is the weighted arithmetic mean of the normalized target values.
+2. **GEOM_MEAN**: This is the weighted geometric mean of the normalized target values.
+
+You can choose either `""MEAN""` or `""GEOM_MEAN""` as the `scalarizer` parameter when constructing a `DesirabilityObjective`."
+70,0.6022781,0.6455963,What is the difference between a Pareto objective and a desirability objective?,The pareto objective does not aggregate targets into a single scalar value but instead seeks to identify the Pareto front which consists of the set of non-dominated target configurations. This means that for all points in the pareto front no other configuration is better in all targets.,"The **ParetoObjective** and **DesirabilityObjective** in BayBE are both used to handle optimization problems with multiple targets, but they differ fundamentally in how they approach trade-offs among those targets:
+
+---
+
+### **ParetoObjective**
+
+- **Purpose:** Finds a set of solutions representing optimal trade-offs among multiple (potentially conflicting) targets, without combining them into a single value.
+- **How it works:** Identifies the **Pareto front**—the set of *non-dominated* solutions, where no solution is better than another in all targets.
+- **Modeling:** Maintains explicit models for each target separately.
+- **Trade-off specification:** The trade-off between targets does **not** need to be specified in advance. You can decide your preferences *after* the experiments, knowing each point on the Pareto front is optimal for some preference.
+- **Acquisition functions:** Requires acquisition functions that can handle vector-valued outputs (e.g., `qLogNoisyExpectedHypervolumeImprovement`).
+- **Use case:** When you want to explore the full range of optimal trade-offs and keep flexibility in choosing your preferred solution later.
+
+---
+
+### **DesirabilityObjective**
+
+- **Purpose:** Combines multiple targets into a **single scalar value** (the overall desirability) using a scalarization function.
+- **How it works:** Normalizes each target (requires bounds), assigns weights to reflect their relative importance, and combines them using a scalarizer (arithmetic or geometric mean).
+- **Modeling:** Uses a single predictive model for the combined desirability value.
+- **Trade-off specification:** The trade-off between targets **must be specified in advance** via weights and choice of scalarizer.
+- **Acquisition functions:** Works with standard scalar-valued acquisition functions.
+- **Use case:** When you have clear priorities or preferences among targets and want a single “best” solution according to those preferences.
+
+---
+
+### **Summary Table**
+
+| Aspect                | ParetoObjective                              | DesirabilityObjective                      |
+|-----------------------|----------------------------------------------|--------------------------------------------|
+| Trade-off handling    | After experiments (post-hoc)                 | Before experiments (via weights)           |
+| Output                | Set of Pareto-optimal solutions              | Single scalar desirability value           |
+| Modeling              | Separate model per target                    | Single model for combined desirability     |
+| Flexibility           | High (choose preferences later)              | Lower (preferences fixed up front)         |
+| Acquisition functions | Vector-valued required",What is the purpose of the ParetoObjective in BayBE?,To find a set of solutions that represent optimal trade-offs among multiple conflicting targets by identifying the Pareto front of non-dominated configurations.,"The purpose of the **ParetoObjective** in BayBE is to handle optimization problems involving multiple, potentially conflicting targets by identifying the set of solutions that represent optimal trade-offs among these targets. Instead of aggregating the targets into a single scalar value (as with the DesirabilityObjective), the ParetoObjective seeks to find the **Pareto front**—the set of non-dominated configurations where no other solution is better in all targets simultaneously.
+
+This approach allows users to:
+
+- **Model each target explicitly:** Separate models are maintained for each target.
+- **Postpone trade-off decisions:** Users do not need to specify the exact trade-off between targets in advance; preferences can be adjusted after the experiments, knowing that each point on the Pareto front is optimal for some preference.
+- **Handle conflicting objectives:** It is especially useful when optimizing for targets that cannot be easily combined or weighted beforehand.
+
+In summary, the ParetoObjective is used in BayBE to support multi-objective optimization by finding solutions that are optimal with respect to all considered targets, without requiring prior specification of their relative importance."
+71,0.8395658,0.7228767,Can I have two parameters with the same name in one campaign?,BayBE identifies each parameter by a ``name``. All parameter names in one campaign must be unique.,"No, you cannot have two parameters with the same name in one campaign. According to the documentation, BayBE identifies each parameter by a name, and all parameter names in one campaign must be unique. This ensures that each parameter can be referenced and managed unambiguously within the campaign.",What is the only continuous parameter type currently supported by BayBE?,NumericalContinuousParameter,The only continuous parameter type currently supported by BayBE is the **NumericalContinuousParameter**.
+74,0.78301746,0.6992993,How do I create chemical SubstanceParameter? ,"from baybe.parameters import SubstanceParameter
+
+SubstanceParameter(
+    name=""Solvent"",
+    data={
+        ""Water"": ""O"",
+        ""1-Octanol"": ""CCCCCCCCO"",
+        ""Toluene"": ""CC1=CC=CC=C1"",
+    },
+    active_values=[  # optional, recommends only water and toluene as solvent
+        ""Water"",
+        ""Toluene"",
+    ],
+    encoding=""MORDRED"",  # optional
+    decorrelate=0.7,  # optional
+)","To create a chemical **SubstanceParameter** in BayBE, you need to provide a mapping of labels (such as solvent names) to their SMILES strings, which are text representations of molecular structures. BayBE will then automatically compute molecular descriptors (fingerprints) for these substances, allowing the model to capture chemical similarities.
+
+Here’s how you can create a **SubstanceParameter**:
+
+```python
+from baybe.parameters import SubstanceParameter
+
+SubstanceParameter(
+    name=""Solvent"",
+    data={
+        ""Water"": ""O"",
+        ""1-Octanol"": ""CCCCCCCCO"",
+        ""Toluene"": ""CC1=CC=CC=C1"",
+    },
+    active_values=[  # optional: restricts recommendations to these
+        ""Water"",
+        ""Toluene"",
+    ],
+    encoding=""MORDRED"",  # optional: choose fingerprint type, e.g., ""ECFP"", ""MORDRED"", ""RDKIT""
+    decorrelate=0.7,     # optional: keep only descriptors with correlation below this threshold
+)
+```
+
+**Key points:**
+
+- **data**: A dictionary mapping labels to SMILES strings.
+- **encoding** (optional): Choose the type of chemical fingerprint (e.g., `""ECFP""`, `""MORDRED""`, `""RDKIT""`). Defaults to `""MORDRED""` if not specified.
+- **active_values** (optional): Restrict which substances can be recommended.
+- **decorrelate** (optional): Reduce descriptor redundancy by keeping only those with correlation below the specified threshold (e.g., `0.7`).
+- **kwargs_fingerprint** (optional): Pass additional options to the fingerprint calculation, e.g.:
+    ```python
+    kwargs_fingerprint={
+        ""radius"": 4,
+        ""fp_size"": 1024,
+    }
+    ```
+
+**Note:**  
+- The `SubstanceParameter` is only available if BayBE was installed with the extra `chem` dependency.
+- This parameter is intended for small molecules. For polymers or mixtures, use `CustomDiscreteParameter` with your own descriptors.
+
+**Example with custom fingerprint options:**
+```python
+from baybe.parameters import SubstanceParameter
+
+SubstanceParameter(
+    name=""Solvent"",
+    data={
+        ""Water"": ""O"",
+        ""1-Octanol"": ""CCCCCCCCO"",
+        ""Toluene"": ""CC1=CC=CC=C1"",
+    },
+    encoding=""ECFP"",
+    kwargs","What does the encoding option ""MORDRED"" specify when initializing a SubstanceParameter in BayBE?","It specifies that a chemical descriptor based fingerprint, the MordredFingerprint, will be used to encode the molecular structures.","The encoding option ""MORDRED"" specifies that BayBE will use chemical descriptors calculated by the MordredFingerprint as the encoding for each substance label in the SubstanceParameter. These descriptors are computed from the SMILES string of each substance using the [scikit-fingerprints](https://scikit-fingerprints.github.io/scikit-fingerprints/) package. The ""MORDRED"" encoding results in a set of numerical features (descriptors) that represent various chemical properties of small molecules, allowing BayBE to capture chemical similarities between different substances more effectively than basic encodings like one-hot or integer encoding."
+77,0.7651513,0.44766212,What is a recommender?,Recommenders explore the search space and provide recommendations for the next experiment or batch.,"A recommender in BayBE is a component that explores the search space and provides recommendations for the next experiment or batch of experiments. Recommenders use different algorithms and approaches to suggest which points in the search space should be evaluated next, helping to efficiently optimize or explore the problem at hand. They can be classified into different types, such as pure recommenders (which directly generate recommendations using specific algorithms like clustering, sampling, or Bayesian optimization) and meta recommenders (which manage and switch between multiple pure recommenders according to specified logic). The choice of recommender can depend on the nature of the search space (discrete, continuous, or hybrid) and the desired exploration or optimization strategy.",What is the purpose of pure recommenders in BayBE?,To recommend measurements using different algorithms and approaches.,"The purpose of pure recommenders in BayBE is to generate recommendations for the next experiment or batch of experiments by directly exploring the search space using their own internal algorithms and logic. They are responsible solely for recommending measurements, without relying on external models or meta-strategies. Pure recommenders can be designed for different types of search spaces (discrete, continuous, or hybrid), and their compatibility is indicated in their class definitions. Examples include random sampling, farthest point sampling, clustering-based selection, and Bayesian optimization approaches. Each pure recommender uses a specific algorithmic approach to efficiently explore and exploit the search space to suggest promising experimental candidates."
+79,0.9121296,0.81265545,Which clustering recommender does BayBE have?,"BayBE offers a set of recommenders leveraging techniques to facilitate point selection
+via clustering:
+* **[`PAMClusteringRecommender`]():**This recommender utilizes partitioning around medoids.
+* **[`KMeansClusteringRecommender`]():**This recommender implements k-means clustering.
+**[`GaussianMixtureClusteringRecommender`]():**This recommender leverages Gaussian Mixture Models for clustering.","BayBE offers the following clustering recommenders:
+
+- **PAMClusteringRecommender**: Utilizes partitioning around medoids for clustering.
+- **KMeansClusteringRecommender**: Implements k-means clustering.
+- **GaussianMixtureClusteringRecommender**: Leverages Gaussian Mixture Models for clustering.
+
+These recommenders facilitate point selection via clustering techniques.",Which clustering recommender in BayBE uses Gaussian Mixture Models?,GaussianMixtureClusteringRecommender,The **GaussianMixtureClusteringRecommender** in BayBE uses Gaussian Mixture Models for clustering.
+82,0.7332269,0.49029788,"Can you explain search space, subspace and search space type?","The `SearchSpace` contains all possible values of all parameters of the optimization campaign. It consists of two, potentially empty subspaces: One for the discrete (`SubspaceDiscrete`) and one for the continuous (`SubspaceContinuous`) parameters. Depending on which of them is empty, the `SearchSpaceType` is either `DISCRETE`, `CONTINUOUS`, or `HYBRID` (in case both are on-empty).","Certainly! Here’s an explanation based on the provided BayBE documentation:
+
+---
+
+## Search Space
+
+A **search space** in BayBE is the domain of possible values for the parameters that are being optimized during a campaign. It defines the set of all possible parameter configurations that BayBE can explore to find the optimal solution. The search space is implemented via the `SearchSpace` class.
+
+- **Note:** The search space is not necessarily the same as the set of all allowed measurements. You can add measurements outside the search space if needed.
+
+---
+
+## Subspace
+
+A **search space** in BayBE is composed of two (potentially empty) **subspaces**:
+
+1. **SubspaceDiscrete**: Contains all discrete parameters (e.g., categorical, integer, or discrete numerical values).
+2. **SubspaceContinuous**: Contains all continuous parameters (e.g., real-valued parameters within a range).
+
+Each subspace can be constructed independently and then combined to form the overall search space. For example, you can have a search space that is purely discrete, purely continuous, or a mix of both.
+
+---
+
+## Search Space Type
+
+Depending on which subspaces are present (non-empty), the search space is classified into one of three **SearchSpaceType**s:
+
+| SubspaceDiscrete | SubspaceContinuous | SearchSpaceType             |
+|------------------|-------------------|-----------------------------|
+| Non-empty        | Empty             | DISCRETE                    |
+| Empty            | Non-empty         | CONTINUOUS                  |
+| Non-empty        | Non-empty         | HYBRID                      |
+
+- **DISCRETE:** Only discrete parameters are present.
+- **CONTINUOUS:** Only continuous parameters are present.
+- **HYBRID:** Both discrete and continuous parameters are present.
+
+---
+
+### Example
+
+Suppose you have:
+- A continuous parameter `c` in [0, 1]
+- A discrete parameter `d` with values [1, 2, 3]
+
+If you define a search space with both, it will be of type **HYBRID**.
+
+---
+
+### Summary Table
+
+| Term              | Meaning                                                                                 |
+|-------------------|----------------------------------------------------------------------------------------|
+| Search Space      | The full set of possible parameter configurations BayBE can explore.                    |
+| Subspace          | A component of the search space, either for discrete or continuous parameters.          |
+| SearchSpaceType   | The classification of the search space: DISCRETE, CONTINUOUS, or HYBRID.               |
+
+---
+
+**In summary",What are the three possible types of SearchSpaceType in BayBE?,"DISCRETE, CONTINUOUS, and HYBRID","The three possible types of `SearchSpaceType` in BayBE are:
+
+1. **DISCRETE**: The search space contains only discrete parameters (i.e., `SubspaceDiscrete` is non-empty and `SubspaceContinuous` is empty).
+2. **CONTINUOUS**: The search space contains only continuous parameters (i.e., `SubspaceDiscrete` is empty and `SubspaceContinuous` is non-empty).
+3. **HYBRID**: The search space contains both discrete and continuous parameters (i.e., both `SubspaceDiscrete` and `SubspaceContinuous` are non-empty)."
+84,0.7465656,0.48383123,Can I create a search space from a dataframe with continuous and discrete data?,"SearchSpace.from_dataframe constructs a search space from a given dataframe. Due to the ambiguity between discrete and continuous parameter representations when identifying parameter ranges based only on data, this function requires that the appropriate parameter definitions be explicitly provided. This is different for its subspace counterparts SubspaceDiscrete.from_dataframe and SubspaceContinuous.from_dataframe, where a fallback mechanism can automatically infer minimal parameter specifications if omitted.from baybe.searchspace import SearchSpace
+
+p_cont = NumericalContinuousParameter(name=""c"", bounds=[0, 1])
+p_disc = NumericalDiscreteParameter(name=""d"", values=[1, 2, 3])
+df = pd.DataFrame({""c"": [0.3, 0.7], ""d"": [2, 3]})
+searchspace = SearchSpace.from_dataframe(df=df, parameters=[p_cont, p_disc])
+print(searchspace)","Yes, you can create a search space from a dataframe containing both continuous and discrete data in BayBE. To do this, you should use the method `SearchSpace.from_dataframe`. However, because BayBE cannot always automatically distinguish between discrete and continuous parameters based solely on the data, you **must explicitly provide the parameter definitions** (i.e., a list of parameter objects specifying which columns are continuous and which are discrete).
+
+Here’s an example from the documentation:
+
+```python
+from baybe.parameters import NumericalContinuousParameter, NumericalDiscreteParameter
+from baybe.searchspace import SearchSpace
+import pandas as pd
+
+p_cont = NumericalContinuousParameter(name=""c"", bounds=[0, 1])
+p_disc = NumericalDiscreteParameter(name=""d"", values=[1, 2, 3])
+df = pd.DataFrame({""c"": [0.3, 0.7], ""d"": [2, 3]})
+searchspace = SearchSpace.from_dataframe(df=df, parameters=[p_cont, p_disc])
+print(searchspace)
+```
+
+This will create a **hybrid search space** with both continuous and discrete subspaces, as defined by your parameter list.
+
+**Summary:**  
+- Yes, you can create a search space from a dataframe with both continuous and discrete data.
+- You must provide explicit parameter definitions to resolve ambiguity between parameter types.  
+- Use `SearchSpace.from_dataframe(df, parameters=[...])` for this purpose.",What must be explicitly provided when using SearchSpace.from_dataframe to construct a search space from a dataframe?,The appropriate parameter definitions must be explicitly provided.,"When using `SearchSpace.from_dataframe` to construct a search space from a dataframe, the appropriate parameter definitions (i.e., the list of parameter objects specifying types, bounds, or values) must be explicitly provided. This is necessary because the function cannot unambiguously infer discrete versus continuous parameter representations based only on the data."
+89,0.45425683,0.59001404,How is the data contained in a search space being represented and handled internally?,"Internally, the data is represented by the so-called ÃÂcomputational representationÃÂ","In BayBE, the data contained in a search space is represented and handled internally through a structured system involving subspaces and dual representations, especially for discrete parameters:
+
+### 1. **Subspaces**
+- **SearchSpace** is composed of two (potentially empty) subspaces:
+  - **SubspaceDiscrete**: Contains all discrete parameters.
+  - **SubspaceContinuous**: Contains all continuous parameters.
+- Depending on which subspaces are present, the search space is classified as DISCRETE, CONTINUOUS, or HYBRID.
+
+### 2. **Discrete Subspaces: Dual Representation**
+For discrete parameters, BayBE uses two internal dataframes:
+- **Experimental Representation (`exp_rep`)**:  
+  - Shows parameters as provided by the user (e.g., categorical labels, original values).
+  - This is the view an experimenter would expect to see.
+- **Computational Representation (`comp_rep`)**:  
+  - Used internally for calculations and modeling.
+  - Transforms categorical parameters (e.g., via one-hot encoding) and removes constant columns or labels.
+  - The shape and content can change depending on the encoding used.
+
+**Example:**
+```python
+from baybe.parameters import NumericalDiscreteParameter, CategoricalParameter
+
+speed = CategoricalParameter(""Speed"", values=[""slow"", ""normal"", ""fast""], encoding=""OHE"")
+temperature = NumericalDiscreteParameter(name=""Temperature"", values=[90, 105])
+subspace = SubspaceDiscrete.from_product(parameters=[speed, temperature])
+```
+- **Experimental Representation:**
+  ```
+      Speed  Temperature
+  0    slow         90.0
+  1    slow        105.0
+  2  normal         90.0
+  3  normal        105.0
+  4    fast         90.0
+  5    fast        105.0
+  ```
+- **Computational Representation:**
+  ```
+     Speed_slow  Speed_normal  Speed_fast  Temperature
+  0           1             0           0         90.0
+  1           1             0           0        105.0
+  2           0             1           0         90.0
+  3           0             1           0        105.0
+  4           0             0           1         90.0
+  5           0",What are the names of the two internal dataframes used to represent discrete subspaces in BayBE?,Experimental representation and computational representation.,"The two internal dataframes used to represent discrete subspaces in BayBE are called:
+
+1. **Experimental Representation** (`exp_rep`)
+2. **Computational Representation** (`comp_rep`)"
+90,0.7590804,0.74017364,How can I create a subspace representing a hyperrectangle?,The [`SubspaceContinuous.from_bounds`]() method can be used to easily create a subspace representing a hyperrectangle.,"You can create a subspace representing a hyperrectangle in BayBE by using the method <code>SubspaceContinuous.from_bounds</code>. This method allows you to specify the lower and upper bounds for each continuous parameter, and it will construct a continuous subspace (a hyperrectangle) accordingly.
+
+**Example:**
+```python
+from baybe.searchspace import SubspaceContinuous
+import pandas as pd
+
+bounds = pd.DataFrame({""param1"": [0, 1], ""param2"": [-1, 1]})
+subspace = SubspaceContinuous.from_bounds(bounds)
+```
+
+This will create a continuous subspace where:
+- <code>param1</code> ranges from 0 to 1
+- <code>param2</code> ranges from -1 to 1
+
+The resulting subspace is a hyperrectangle defined by these bounds.",How can you create a continuous subspace with explicit bounds in BayBE?,By using the SubspaceContinuous.from_bounds method with a DataFrame specifying the parameter bounds.,"To create a continuous subspace with explicit bounds in BayBE, you can use the SubspaceContinuous.from_bounds method. This method allows you to define the lower and upper bounds for each continuous parameter using a pandas DataFrame. Here’s how you can do it:
+
+```python
+from baybe.searchspace import SubspaceContinuous
+import pandas as pd
+
+# Define the bounds for each parameter in a DataFrame
+bounds = pd.DataFrame({
+    ""param1"": [0, 1],   # param1 ranges from 0 to 1
+    ""param2"": [-1, 1]   # param2 ranges from -1 to 1
+})
+
+# Create the continuous subspace using the explicit bounds
+subspace = SubspaceContinuous.from_bounds(bounds)
+```
+
+This will create a continuous subspace where:
+- param1 has bounds [0.0, 1.0]
+- param2 has bounds [-1.0, 1.0]
+
+The resulting subspace represents a hyperrectangle defined by the specified bounds for each parameter."
+91,0.826199,0.6586178,How do I create a search space from continuous data?,"continuous spaces can be constructed using [`SubspaceContinuous.from_dataframe`]().
+However, when using this method to create a continuous space, it will create the smallest axis-aligned hyperrectangle-shaped continuous subspace that contains the points specified in the given dataframe.
+
+```python
+from baybe.parameters import NumericalContinuousParameter
+from baybe.searchspace.continuous import SubspaceContinuous
+
+points = pd.DataFrame(
+    {
+        ""param1"": [0, 1, 2],
+        ""param2"": [-1, 0, 1],
+    }
+)
+subspace = SubspaceContinuous.from_dataframe(df=points)
+```
+
+As for discrete subspaces, this method automatically infers the parameter types but can be provided with an optional list `parameters`.
+
+```default
+ Continuous Parameters
+      Name                          Type  Lower_Bound  Upper_Bound
+ 0  param1  NumericalContinuousParameter          0.0          2.0
+ 1  param2  NumericalContinuousParameter         -1.0          1.0
+```","To create a search space from continuous data in BayBE, you have several options depending on your needs and the level of control you want over parameter definitions:
+
+### 1. Using `SubspaceContinuous.from_dataframe`
+If you have a DataFrame of continuous data points, you can create a continuous subspace that forms the smallest axis-aligned hyperrectangle containing all your points:
+
+```python
+from baybe.searchspace.continuous import SubspaceContinuous
+import pandas as pd
+
+points = pd.DataFrame({
+    ""param1"": [0, 1, 2],
+    ""param2"": [-1, 0, 1],
+})
+subspace = SubspaceContinuous.from_dataframe(df=points)
+```
+This will automatically infer parameter types and set the lower and upper bounds for each parameter based on the minimum and maximum values in your DataFrame.
+
+### 2. Using `SubspaceContinuous.from_bounds`
+If you know the explicit bounds for your continuous parameters, you can directly specify them:
+
+```python
+from baybe.searchspace import SubspaceContinuous
+import pandas as pd
+
+bounds = pd.DataFrame({""param1"": [0, 1], ""param2"": [-1, 1]})
+subspace = SubspaceContinuous.from_bounds(bounds)
+```
+
+### 3. Creating a Full `SearchSpace` from Continuous Data
+If you want to create a full `SearchSpace` (not just a subspace), use `SearchSpace.from_dataframe`. **Note:** For full search spaces, you must explicitly provide the parameter definitions, as BayBE cannot always infer whether a parameter is discrete or continuous from data alone.
+
+```python
+from baybe.parameters import NumericalContinuousParameter
+from baybe.searchspace import SearchSpace
+import pandas as pd
+
+p_cont = NumericalContinuousParameter(name=""c"", bounds=[0, 1])
+df = pd.DataFrame({""c"": [0.3, 0.7]})
+searchspace = SearchSpace.from_dataframe(df=df, parameters=[p_cont])
+```
+
+### Summary Table
+
+| Method                                 | What it does                                      | Parameter inference? |
+|-----------------------------------------|---------------------------------------------------|----------------------|
+| `SubspaceContinuous.from_dataframe`     | Smallest hyperrectangle containing data points     | Yes                  |
+| `SubspaceContinuous.from_bounds`        | Uses explicit bounds for each parameter            | No                   |
+| `SearchSpace.from_dataframe`            | Full search space (requires parameter definitions) | No                   |
+
+**In short:**  
+- For quick construction from data",What shape of continuous subspace does SubspaceContinuous.from_dataframe create from the points in a dataframe?,The smallest axis-aligned hyperrectangle-shaped continuous subspace containing the points.,"**Answer:**  
+`SubspaceContinuous.from_dataframe` creates the **smallest axis-aligned hyperrectangle-shaped continuous subspace** that contains all the points specified in the given dataframe. This means it constructs a box (hyperrectangle) where each parameter's lower and upper bounds are set to the minimum and maximum values found in the dataframe for that parameter."
+93,0.8184651,0.6594684,My DataFrame is serialized to JSON that I don't understand. How can I read it and edit it?,"Yes, BayBE serializes DataFrames to a compressed binary format, which makes the JSON unreadable. This is intentional ÃÂÃÂ it helps preserve exact data types and reduces size.
+
+But if you want to read and edit the JSON yourself, you can resort to any dataframe constructor of your choice
+(such as [`DataFrame.from_records`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.from_records.html#pandas.DataFrame.from_records))
+when defining your configuration, instead of having to work with compressed formats:
+
+```python
+import pandas as pd
+from baybe.searchspace.discrete import SubspaceDiscrete
+
+subspace = SubspaceDiscrete.from_dataframe(
+    pd.DataFrame.from_records(
+        data=[[1, ""a""], [2, ""b""], [3, ""c""]], columns=[""Number"", ""Category""]
+    )
+)
+
+subspace_json = """"""
+{
+    ""constructor"": ""from_dataframe"",
+    ""df"": {
+        ""constructor"": ""from_records"",
+        ""data"": [[1, ""a""], [2, ""b""], [3, ""c""]],
+        ""columns"": [""Number"", ""Category""]
+    }
+}
+""""""
+reconstructed = SubspaceDiscrete.from_json(subspace_json)
+
+assert subspace == reconstructed
+```","When BayBE serializes objects containing pandas DataFrames, it automatically converts the DataFrame to a compressed binary format within the JSON. This ensures exact restoration of data types and reduces the size of the JSON, but it also makes the JSON representation not human-readable and difficult to edit manually.
+
+**How to read and edit your DataFrame in a BayBE JSON configuration:**
+
+### 1. Use Alternative Constructors for Human-Readable JSON
+
+Instead of working with the compressed DataFrame format, you can use alternative constructors that allow you to specify the DataFrame in a more readable way. For example, you can use `DataFrame.from_records` to define your data as lists and columns:
+
+```python
+import pandas as pd
+from baybe.searchspace.discrete import SubspaceDiscrete
+
+subspace_json = """"""
+{
+    ""constructor"": ""from_dataframe"",
+    ""df"": {
+        ""constructor"": ""from_records"",
+        ""data"": [[1, ""a""], [2, ""b""], [3, ""c""]],
+        ""columns"": [""Number"", ""Category""]
+    }
+}
+""""""
+reconstructed = SubspaceDiscrete.from_json(subspace_json)
+```
+
+In this format, you can easily read and edit the `data` and `columns` fields.
+
+### 2. Manual Serialization/Deserialization Helpers
+
+If you have a DataFrame already serialized in the compressed format, you can use BayBE’s `serialize_dataframe` and `deserialize_dataframe` helper functions to convert between the binary format and a pandas DataFrame. This allows you to inspect and modify the DataFrame in Python, then re-serialize it if needed.
+
+### 3. Recommendation
+
+- **For editing:** Convert your configuration to use the human-readable constructor format as shown above. This makes it easy to read and modify the DataFrame directly in the JSON.
+- **For inspection:** Use the deserialization helpers to load the DataFrame into Python, inspect or modify it, and then serialize it back.
+
+**Summary:**  
+BayBE’s default DataFrame serialization is not human-readable. To make your configuration readable and editable, use alternative constructors like `from_records` in your JSON. This lets you specify the DataFrame as plain lists and columns, making it easy to understand and change.",How does BayBE ensure that DataFrames are exactly restored after serialization and deserialization?,By converting DataFrames to a binary format during serialization.,"BayBE ensures that DataFrames are exactly restored after serialization and deserialization by automatically converting contained pandas DataFrames to a binary format during serialization. This approach serves two main purposes:
+
+1. **Exact Restoration of Data Types:** By serializing DataFrames to a binary format, BayBE preserves all data types and structure, ensuring that the DataFrame is restored exactly as it was before serialization, without any loss or alteration of information.
+
+2. **Compression:** The binary format also compresses the DataFrame, reducing the size of the resulting serialization string.
+
+This process is handled automatically when serializing BayBE objects that contain DataFrames. However, because the binary format is not human-readable in the JSON output, BayBE also provides helper functions (`serialize_dataframe` and `deserialize_dataframe`) and supports alternative constructors (such as `DataFrame.from_records`) for cases where human-readable configuration is preferred.
+
+In summary, BayBE’s use of a binary serialization format for DataFrames guarantees that all data types and values are preserved exactly through the serialization-deserialization roundtrip."
+94,0.75591886,0.4625792,Does BayBE offer serialization?,BayBE is shipped with a sophisticated serialization engine that allows to unstructured its objects into basic types and seamlessly reassemble them afterward. ,"Yes, BayBE offers a sophisticated serialization engine. Most BayBE objects can be serialized into basic types, such as JSON, using their to_json method. These objects can then be deserialized using the from_json method of the corresponding class, resulting in an equivalent copy of the original object. This enables workflows such as persisting objects for later use, transmitting them outside Python, interacting with APIs and databases, and writing configuration files. BayBE also supports advanced serialization features, such as automatic conversion of DataFrames to compressed binary formats and flexible deserialization from human-readable configuration strings.",How can BayBE objects be serialized and deserialized to and from JSON?,By using the to_json method to serialize an object to a JSON string and the from_json method of the corresponding class to deserialize it back.,"BayBE objects can be serialized and deserialized to and from JSON using built-in methods and flexible configuration strings. Here’s how the process works:
+
+**1. Serialization to JSON**
+
+Most BayBE objects provide a `to_json` method that converts the object into a JSON string. This string can be stored, transmitted, or used outside the Python ecosystem.
+
+**Example:**
+```python
+from baybe.parameters import CategoricalParameter
+
+parameter = CategoricalParameter(name=""Setting"", values=[""low"", ""high""])
+json_string = parameter.to_json()
+```
+
+**2. Deserialization from JSON**
+
+To reconstruct the object, use the class’s `from_json` method, passing the JSON string. This creates an equivalent copy of the original object.
+
+**Example:**
+```python
+reconstructed = CategoricalParameter.from_json(json_string)
+assert parameter == reconstructed
+```
+
+**3. Manual Configuration Strings**
+
+You can manually write JSON configuration strings that mirror the constructor arguments of BayBE objects. This is useful for creating objects outside Python, such as in configuration files or API calls.
+
+**Example:**
+```python
+parameter_json = """"""
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+via_json = CategoricalParameter.from_json(parameter_json)
+```
+
+**4. Nested Objects**
+
+BayBE supports hierarchical serialization, so objects containing other BayBE objects (e.g., a SearchSpace with Parameters) can be represented as nested JSON structures.
+
+**Example:**
+```python
+objective_json = """"""
+{
+    ""targets"": [
+        {
+            ""type"": ""NumericalTarget"",
+            ""name"": ""T1"",
+            ""mode"": ""MAX"",
+            ""bounds"": [-1.0, 1.0]
+        },
+        {
+            ""type"": ""NumericalTarget"",
+            ""name"": ""T2"",
+            ""mode"": ""MIN"",
+            ""bounds"": [0.0, 1.0]
+        }
+    ],
+    ""weights"": [0.1, 0.9],
+    ""scalarizer"": ""MEAN""
+}
+""""""
+from baybe.objectives import DesirabilityObjective
+assert DesirabilityObjective.from_json(objective_json)
+```
+
+**5. Automatic Field Conversion**
+
+BayBE automatically converts simple representations in JSON to the appropriate types (e.g., tuples/lists to Interval objects, strings to enums).
+
+**Example:**
+```python
+from baybe.targets import NumericalTarget
+t = NumericalTarget.from_json('{""name"": ""T"","
+95,0.70434827,0.41230902,I want to use a parameter for an API call later. Is it possible to create a JSON string directly?,"Yes, you can manually write the configuration as a JSON string that matches the expected constructor parameters of the object. Here's an example for a CategoricalParameter: from baybe.parameters import CategoricalParameter
+
+parameter_json = """"""
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+
+# Deserialize from JSON
+param = CategoricalParameter.from_json(parameter_json) This method is useful if you're storing configuration in a file or receiving it from an external system (like an API). Just make sure the JSON matches the expected structure for the object.","Yes, it is possible to create a JSON string directly for a parameter in BayBE, which you can then use for an API call or persist for later use.
+
+**How to do it:**
+
+1. **Identify the parameter class** you want to use (e.g., `CategoricalParameter`).
+2. **Check the required arguments** for its constructor (e.g., `name`, `values`).
+3. **Assemble a JSON string** that mirrors the constructor signature.
+
+**Example:**
+
+Suppose you want to create a `CategoricalParameter`:
+
+```json
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+```
+
+You can write this JSON string manually and use it later for deserialization in Python:
+
+```python
+from baybe.parameters import CategoricalParameter
+
+parameter_json = """"""
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+parameter = CategoricalParameter.from_json(parameter_json)
+```
+
+**Including the `type` field (optional but recommended for flexibility):**
+
+If you want to make the JSON string self-describing (especially useful if you have multiple parameter types), add a `""type""` field:
+
+```json
+{
+    ""type"": ""CategoricalParameter"",
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+```
+
+This allows you (or the API) to deserialize it using the base class:
+
+```python
+from baybe.parameters.base import Parameter
+
+parameter = Parameter.from_json(parameter_json)
+```
+
+**Summary:**  
+You can create a JSON string for a BayBE parameter directly, either manually or via the `.to_json()` method, and use it for API calls or later deserialization. Including the `""type""` field in your JSON is recommended for maximum flexibility.",How do you deserialize a BayBE object from a configuration string?,By creating a JSON string that mirrors the constructor signature of the object and using the class's from_json method.,"To deserialize a BayBE object from a configuration string, you typically follow these steps:
+
+1. **Write a JSON configuration string** that mirrors the constructor signature of the BayBE object you want to create. This string should specify the required arguments as fields, and can also include nested objects or alternative constructors if needed.
+
+2. **Use the `.from_json()` method** of the relevant BayBE class to create the object from your configuration string.
+
+### Example: Basic Deserialization
+
+Suppose you want to create a `CategoricalParameter`:
+
+```python
+from baybe.parameters import CategoricalParameter
+
+parameter_json = """"""
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+parameter = CategoricalParameter.from_json(parameter_json)
+```
+
+This is equivalent to constructing the object directly in Python.
+
+### Example: Nested Objects
+
+You can nest objects within the configuration string. For example, a `DesirabilityObjective` with multiple `NumericalTarget`s:
+
+```python
+from baybe.objectives import DesirabilityObjective
+
+objective_json = """"""
+{
+    ""targets"": [
+        {
+            ""type"": ""NumericalTarget"",
+            ""name"": ""T1"",
+            ""mode"": ""MAX"",
+            ""bounds"": [-1.0, 1.0]
+        },
+        {
+            ""type"": ""NumericalTarget"",
+            ""name"": ""T2"",
+            ""mode"": ""MIN"",
+            ""bounds"": [0.0, 1.0]
+        }
+    ],
+    ""weights"": [0.1, 0.9],
+    ""scalarizer"": ""MEAN""
+}
+""""""
+objective = DesirabilityObjective.from_json(objective_json)
+```
+
+### Automatic Field Conversion
+
+BayBE automatically converts simple representations (like enums or intervals) from their string or list forms in the JSON. For example, you can specify an interval as `[0, 1]` or a mode as `""MAX""`.
+
+### DataFrames
+
+If your object contains a pandas DataFrame, you can use alternative constructors in your configuration string to avoid dealing with binary serialization. For example:
+
+```python
+subspace_json = """"""
+{
+    ""constructor"": ""from_dataframe"",
+    ""df"": {
+        ""constructor"": ""from_records"",
+        ""data"": [[1, ""a""], [2, ""b""], [3, ""c""]],
+        ""columns"": [""Number"", ""Category""]
+    }
+}
+""""""
+from baybe.searchspace.discrete import SubspaceDiscrete
+sub"
+96,0.46623605,0.74421054,What happens if I omit a value from the serialization string?,"If the parameter has a default value, this one will be used. There is no information in what is going to happen if a parameter does not have a default value.","If you omit a value from the serialization string when working with BayBE objects, the following will happen:
+
+- **If the omitted value corresponds to a constructor argument that has a default value**, BayBE will automatically use that default value during deserialization. This is similar to how default arguments work in Python functions and constructors.
+- **If the omitted value is a required argument (i.e., it does not have a default value)**, deserialization will fail, and you will get an error indicating that a required field is missing.
+
+**Example from the documentation:**
+
+```python
+from baybe.parameters import CategoricalParameter
+
+p1 = CategoricalParameter(name=""Setting"", values=[""low"", ""high""])
+p1_json = """"""
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+p1_via_json = CategoricalParameter.from_json(p1_json)
+assert p1 == p1_via_json
+```
+
+In this example, the `encoding` argument is omitted from the JSON string. Since `encoding` has a default value, the deserialized object (`p1_via_json`) will use the default encoding, and the deserialization succeeds.
+
+**Summary:**  
+- Omitted values with defaults → default is used.  
+- Omitted required values → error is raised.",How can default values be handled when deserializing a CategoricalParameter from a configuration string in BayBE?,Default values can be omitted from the configuration string when deserializing a CategoricalParameter; the parameter will use the default values automatically.,"When deserializing a `CategoricalParameter` from a configuration string in BayBE, **default values can be omitted** from the JSON string. If a field has a default value in the Python class, you do not need to specify it in the configuration string—BayBE will automatically use the default during deserialization.
+
+For example, consider the following two configuration strings:
+
+```json
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+```
+
+and
+
+```json
+{
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""],
+    ""encoding"": ""OHE""
+}
+```
+
+If you deserialize either of these using `CategoricalParameter.from_json`, BayBE will fill in any omitted fields with their default values. This means you can safely leave out optional arguments (like `encoding`) unless you want to override the default.
+
+**Summary:**  
+Default values for `CategoricalParameter` fields are automatically applied during deserialization if those fields are omitted from the configuration string. You only need to specify values in the configuration string if you want to override the defaults."
+98,0.7067832,0.7103092,"When deserializing nested objects with different object types, how do you make sure they are deserialized to the correct object subclasses?","The problem can be easily circumvented using an explicit subclass resolution mechanism, i.e., by tagging the respective subclass in an additional type field that holds the class' name. This allows to deserialize the object from the corresponding base class instead (i.e., {class}Parameter <baybe.parameters.base.Parameter> class in the example below), mirroring the flexibility of specifying subtypes to your configuration file: from baybe.parameters.base import Parameter
+from baybe.parameters import CategoricalParameter, TaskParameter
+
+categorical_parameter = CategoricalParameter(name=""Setting"", values=[""low"", ""high""])
+categorical_parameter_json = """"""
+{
+    ""type"": ""CategoricalParameter"",
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+# NOTE: we can use `Parameter.from_json` instead of `CategoricalParameter.from_json`:
+categorical_parameter_reconstructed = Parameter.from_json(categorical_parameter_json)
+assert categorical_parameter == categorical_parameter_reconstructed
+
+task_parameter = TaskParameter(name=""Setting"", values=[""low"", ""high""])
+task_parameter_json = """"""
+{
+    ""type"": ""TaskParameter"",
+    ""name"": ""Setting"",
+    ""values"": [""low"", ""high""]
+}
+""""""
+# NOTE: we can use `Parameter.from_json` instead of `TaskParameter.from_json`:
+task_parameter_reconstructed = Parameter.from_json(task_parameter_json)
+assert task_parameter == task_parameter_reconstructed  
+#### NOTE
+When serializing an object that belongs to a class hierarchy, BayBE automatically
+injects the `type` field into the serialization string to enable frictionless deserialization
+at a later stage.","When deserializing nested objects with different object types in BayBE, you ensure they are deserialized to the correct object subclasses by including an explicit **type** field in the serialization (JSON) string for each object. The **type** field specifies the class name of the object (e.g., ""CategoricalParameter"", ""TaskParameter"", ""NumericalTarget"", etc.).
+
+BayBE’s deserialization mechanism uses this **type** information to automatically resolve and instantiate the correct subclass, even for objects nested within other objects. This means you can deserialize from the base class (e.g., `Parameter.from_json(...)`), and BayBE will reconstruct the correct subclass based on the **type** field present in the JSON.
+
+**Example:**
+
+```python
+objective_json = """"""
+{
+    ""targets"": [
+        {
+            ""type"": ""NumericalTarget"",
+            ""name"": ""T1"",
+            ""mode"": ""MAX"",
+            ""bounds"": [-1.0, 1.0]
+        },
+        {
+            ""type"": ""NumericalTarget"",
+            ""name"": ""T2"",
+            ""mode"": ""MIN"",
+            ""bounds"": [0.0, 1.0]
+        }
+    ],
+    ""weights"": [0.1, 0.9],
+    ""scalarizer"": ""MEAN""
+}
+""""""
+
+# The 'type' field in each target ensures correct subclass deserialization:
+objective = DesirabilityObjective.from_json(objective_json)
+```
+
+**Summary:**  
+By tagging each object (including nested ones) with a **type** field in the configuration string, BayBE can automatically and correctly deserialize each object to its intended subclass, ensuring the integrity and flexibility of complex object hierarchies.","What is the purpose of the ""type"" field in BayBE's serialization strings?","The ""type"" field specifies the subclass name, enabling correct deserialization of objects from the base class.","The purpose of the ""type"" field in BayBE's serialization strings is to explicitly indicate the specific subclass of an object within a class hierarchy. This is necessary because BayBE provides users with multiple modeling alternatives (i.e., different subclasses) for many of its objects, and it is not always possible to know in advance which subclass a given configuration string refers to.
+
+By including a ""type"" field (e.g., ""type"": ""CategoricalParameter""), BayBE enables dynamic and correct deserialization: the system can reconstruct the appropriate subclass instance from the base class's deserialization method (such as Parameter.from_json), rather than requiring the user to specify the exact subclass constructor. This mechanism also supports nested objects, ensuring that all levels of the object hierarchy are correctly resolved during deserialization.
+
+In summary, the ""type"" field allows BayBE to automatically and accurately reconstruct the intended object type from a configuration or JSON string, providing flexibility and ease of use when working with serialized BayBE objects."
+102,0.78291965,0.3923899,"If I have data in array format, can I use it as a lookup function in the simulation?",":class: tip
+If you already have a lookup callable available in an array-based format (for instance,
+if your lookup values are generated using third-party code that works with array inputs
+and outputs), you can effortlessly convert this callable into the required
+dataframe-based format by applying our
+{func}`~baybe.utils.dataframe.arrays_to_dataframes` decorator. 
+
+For example, the above lookup can be equivalently created as follows:
+```python
+import numpy as np
+
+from baybe.utils.dataframe import arrays_to_dataframes
+
+
+@arrays_to_dataframes([""p1""], [""t1""])
+def lookup(array: np.ndarray) -> np.ndarray:
+    """"""The same lookup function in array logic.""""""
+    return array**2
+```","**Yes, you can use data in array format as a lookup function in BayBE's simulation.**
+
+BayBE expects lookup functions to operate on dataframes (i.e., they should accept a dataframe of parameter configurations and return a dataframe of target values). However, if you already have a lookup callable that works with arrays (for example, it takes a NumPy array as input and returns a NumPy array as output), you can easily adapt it for use in BayBE by applying the `arrays_to_dataframes` decorator provided by BayBE.
+
+**How to do it:**
+
+Suppose you have an array-based lookup function:
+```python
+import numpy as np
+
+def lookup_array(array: np.ndarray) -> np.ndarray:
+    return array ** 2
+```
+
+You can convert it to the required dataframe-based format as follows:
+```python
+from baybe.utils.dataframe import arrays_to_dataframes
+
+@arrays_to_dataframes([""p1""], [""t1""])
+def lookup(array: np.ndarray) -> np.ndarray:
+    return array ** 2
+```
+
+Now, `lookup` can be used as a valid lookup function in BayBE's simulation, as it will accept and return dataframes as required.
+
+**Summary:**  
+You do not need to rewrite your array-based logic; just use the `arrays_to_dataframes` decorator to make it compatible with BayBE's simulation lookup mechanism.",What decorator can be used in BayBE to convert an array-based lookup callable into the required dataframe-based format?,arrays_to_dataframes,"The decorator you can use in BayBE to convert an array-based lookup callable into the required dataframe-based format is:
+
+**@arrays_to_dataframes**
+
+This decorator is available from `baybe.utils.dataframe` and allows you to specify the input and output column names. For example:
+
+```python
+from baybe.utils.dataframe import arrays_to_dataframes
+
+@arrays_to_dataframes([""p1""], [""t1""])
+def lookup(array: np.ndarray) -> np.ndarray:
+    return array**2
+```
+
+This will wrap your array-based function so that it accepts and returns pandas DataFrames, as required by BayBE's lookup mechanism."
+107,0.4944878,0.5615574,Can I use the `simulate_transfer_learning` function for continuous search spaces?,"No, only discrete spaces are supported currently","No, you cannot use the `simulate_transfer_learning` function for continuous search spaces. According to the documentation, `simulate_transfer_learning` currently **only supports discrete search spaces**. If you attempt to use it with continuous search spaces, it will not work as intended. For more details on the reasons and limitations, you can refer to the documentation for `simulate_transfer_learning`.",What type of search spaces does the simulate_transfer_learning function currently support in BayBE?,Discrete search spaces.,The `simulate_transfer_learning` function in BayBE **currently only supports discrete search spaces**.
+113,0.5464425,0.50100225,"I have a numerical target that ranges from inf to +inf, do I need to scale it?","If bounds are provided, provide a transformation function to map target values into the [0,1] interval","Yes, you **need to specify bounds** (i.e., scale your target) if you want to use your numerical target in most BayBE workflows, especially when combining multiple targets using a [`DesirabilityObjective`](#desirabilityobjective). 
+
+**Why?**
+- The [`DesirabilityObjective`](#desirabilityobjective) requires all targets to be *normalizable*, which means you must provide `bounds` for each target. This allows BayBE to automatically scale (normalize) the target values into the [0, 1] interval, enabling meaningful combination and comparison between targets with different scales.
+- If you do **not** provide bounds for a target with an unbounded range (from -inf to +inf), BayBE will throw an error when you attempt to use it in a desirability-based objective.
+
+**For single-target optimization** (e.g., just maximizing or minimizing a single target), specifying bounds is optional, but recommended if you want to apply transformations or use the target in combination with others later.
+
+**Summary:**  
+- For multi-target optimization (especially with `DesirabilityObjective`): **Bounds are required**—you must scale your target.
+- For single-target optimization: Bounds are optional, but recommended for normalization and transformation.
+
+**Reference from documentation:**
+> all targets passed to a DesirabilityObjective must be normalizable to enable meaningful combination into desirability values. This requires that all provided targets must have bounds specified ... Otherwise, an error will be thrown.
+
+**Tip:**  
+Choose bounds that are reasonable for your experiment, reflecting the expected or meaningful range of your target values.","What attribute of a NumericalTarget in BayBE specifies whether to minimize, maximize, or match a specific value?",The optimization mode.,"The attribute of a NumericalTarget in BayBE that specifies whether to minimize, maximize, or match a specific value is the **mode** attribute."
+115,0.6429263,0.7647989,What is the keyword that I need to use when using a specific target mode?,The keyword is `mode`.,"The keyword you need to use when specifying a specific target mode is **mode**.
+
+For example:
+```python
+NumericalTarget(
+    name=""Target_1"",
+    mode=""MAX"",  # or TargetMode.MAX
+)
+```
+The **mode** keyword determines whether you want to ""MIN""imize, ""MAX""imize, or ""MATCH"" a specific value for the target.","In BayBE's NumericalTarget MATCH mode, what determines the optimal target value?",The midpoint of the bounds interval determines the optimal target value.,"In BayBE's NumericalTarget MATCH mode, the **optimal target value is determined by the midpoint of the specified bounds**. You set the bounds so that their midpoint is the value you want to match. For example, if you want to match a value of 50, you would set bounds like (45, 55) or (0, 100)—in both cases, the midpoint (50) becomes the optimal value. The spread of the bounds controls how quickly acceptability decreases as you move away from this optimal value, and the transformation function further shapes this decline."
+117,0.6539141,0.50221443,"Can I use only old transfer-learning data in my campaign, without new experiment results?","Not entirely. For effective information transfer, it will always need data from the ongoing campaign
+to understand how other campaigns' data are related.
+Otherwise, it can only build upon general patterns/trends identified in the previous
+campaigns, without knowing if these patterns actually reoccur in the new campaign.
+(**Note:** This can still help to jump-start the new campaign since the most influential
+parameter configurations from old campaigns will then drive the initial exploration.)
+Overall, if correlated task data are provided, the optimization of new campaigns
+can experience a dramatic speedup.","No, you cannot use only old transfer-learning data in your BayBE campaign without new experiment results if you want effective transfer learning. 
+
+**Reason:**  
+Transfer learning in BayBE is designed to *learn* the relationship between previous campaigns (tasks) and the current campaign. For this learning to happen, BayBE needs data from the ongoing (current) campaign. Without any new experiment results from the current campaign, BayBE cannot determine how the old data relates to the new context. In this case, it can only rely on general patterns from previous campaigns, which may not be relevant or optimal for your new campaign.
+
+**From the documentation:**  
+> For effective information transfer, it will always need data from the ongoing campaign to understand how other campaigns' data are related. Otherwise, it can only build upon general patterns/trends identified in the previous campaigns, without knowing if these patterns actually reoccur in the new campaign.
+
+**Summary:**  
+- **Old data alone:** Only helps with general trends; not reliable for new recommendations.
+- **Old + new data:** Enables BayBE to learn the relationship and make effective use of transfer learning.
+
+**Best practice:**  
+Always include at least some new experiment results from your current campaign to unlock the full benefits of transfer learning in BayBE.",What does BayBE use to abstract context changes between campaigns in transfer learning when explicit context parameters are unavailable?,A TaskParameter.,"When explicit context parameters are unavailable, BayBE abstracts context changes between campaigns in transfer learning by encoding each context change into a single dimension using a **TaskParameter**. The TaskParameter ""marks"" the context of individual experiments and aligns different campaigns along their context dimension, allowing BayBE to learn the relationship between current and previous campaign data without requiring hard-coded context parameters."
+119,0.7859554,0.6910604,Can I estimate the search space memory after applying my constraints?,"
+{meth}`~baybe.searchspace.core.SearchSpace.estimate_product_space_size`
+currently does not include the influence of potential constraints in your search space
+as it is generally very hard to incorporate the effect of arbitrary constraints without
+actually building the entire space. Hence, you should always **treat the number you get
+as upper bound** of required memory. This can still be useful ÃÂÃÂ for instance if your
+estimate already is several Exabytes, it is unlikely that most computers would be able
+to handle the result even if there are constraints present.","No, **you cannot directly estimate the search space memory after applying your constraints using BayBE's built-in utilities**. The method `SearchSpace.estimate_product_space_size` **does not take constraints into account**. As stated in the documentation:
+
+> `{meth}~baybe.searchspace.core.SearchSpace.estimate_product_space_size` currently does not include the influence of potential constraints in your search space as it is generally very hard to incorporate the effect of arbitrary constraints without actually building the entire space. Hence, you should always **treat the number you get as upper bound** of required memory.
+
+**What does this mean for you?**
+- The memory estimate you get is for the unconstrained product space (i.e., all possible combinations of discrete parameter values).
+- If you have constraints that remove invalid or redundant combinations, the *actual* memory required will likely be less, but BayBE's estimation utility does not account for this reduction.
+- The estimate is still useful as a worst-case scenario: if the unconstrained space is already too large, the constrained space might still be unmanageable.
+
+**Are there alternatives?**
+- For some special cases (e.g., mixture/simplex constraints), you can use more specialized constructors like `SubspaceDiscrete.from_simplex`, which can be more memory-efficient and may implicitly account for some constraints during construction.
+- However, for arbitrary constraints, there is currently no built-in way in BayBE to estimate the memory usage *after* constraints are applied, unless you explicitly build the constrained space.
+
+**Summary:**  
+You can only estimate the memory for the *unconstrained* search space using BayBE's utilities. The actual memory required after applying constraints will be less, but you cannot estimate this directly without constructing the constrained space yourself. Always treat the estimate as an upper bound.",What BayBE utility can be used to estimate the memory required to represent a discrete search space?,SearchSpace.estimate_product_space_size,The BayBE utility that can be used to estimate the memory required to represent a discrete search space is the **`SearchSpace.estimate_product_space_size`** method. This utility returns a `MemorySize` object with relevant estimates for the memory needed to store the discrete subspace.
+121,0.64910793,0.64972544,How can I efficiently test my code during development without having actual target values?,"You can use the `add_fake_measurements` function to add artificial target measurements. Furthermore, the function `add_parameter_noise` alloes adding artificial parameter noise.","You can efficiently test your code during development without having actual target values by using BayBE’s built-in mechanisms for generating fake data. Specifically:
+
+- **Use `None` as the lookup mechanism**: When running simulations or recommendation loops, you can set the lookup to `None`. This will automatically invoke the `add_fake_measurements()` utility behind the scenes, generating random target values for your domain. This is especially useful when the actual lookup (e.g., a complex simulation) is too slow or unavailable during development.
+
+- **Directly use the `add_fake_measurements()` utility**: If you have a dataframe of recommendations, you can call `add_fake_measurements(measurements, campaign.targets)` to add arbitrary (random) target measurements to your data. You can also use `add_parameter_noise()` to add artificial noise to your parameters if needed.
+
+Example usage:
+```python
+from baybe.utils.dataframe import add_fake_measurements, add_parameter_noise
+
+# Get recommendations
+recommendations = campaign.recommend(5)
+
+# Add fake target measurements and artificial parameter noise to the recommendations.
+measurements = recommendations.copy()
+add_fake_measurements(measurements, campaign.targets)
+add_parameter_noise(measurements, campaign.parameters)
+```
+
+This approach allows you to quickly iterate and test your code, recommendation loops, and workflows without needing real experimental or simulation results.",Which utility function in BayBE can be used to add fake target measurements to a dataframe when testing recommendation loops?,add_fake_measurements,The utility function in BayBE that can be used to add fake target measurements to a dataframe when testing recommendation loops is add_fake_measurements.
+122,0.8441525,0.7779483,For whom does BayBE collect usage statistics?,"
+BayBE only collects usage statistics for employees of Merck KGaA, Darmstadt, Germany.
+","BayBE collects anonymous usage statistics **only** for employees of Merck KGaA, Darmstadt, Germany and/or its affiliates. For all other users, the recording of metrics is turned off and is impossible due to a VPN block.",How can I disable all telemetry in BayBE?,By setting the environment variable BAYBE_TELEMETRY_ENABLED to false or off.,"To disable all telemetry in BayBE, set the environment variable BAYBE_TELEMETRY_ENABLED to False or off. You can do this by running the following command in your terminal before starting BayBE:
+
+```bash
+export BAYBE_TELEMETRY_ENABLED=False
+```
+
+or (depending on your shell):
+
+```bash
+export BAYBE_TELEMETRY_ENABLED=off
+```
+
+This will turn off telemetry entirely. For additional assurance, you can also uninstall internet-related packages such as opentelemetry and its dependencies, but this is not required—setting the environment variable is sufficient to disable telemetry."
+123,0.7464808,0.779742,Is there any way to disable the collection of usage statistics?,Yes. Telemetry in general can be deactivated by setting the environment variable `BAYBE_TELEMETRY_ENABLED` to `false` or `off`.,"Yes, you can disable the collection of usage statistics (telemetry) in BayBE. There are several ways to do this:
+
+1. **Set an Environment Variable:**  
+   Set the environment variable `BAYBE_TELEMETRY_ENABLED` to `false` or `off`. This will turn off telemetry entirely.  
+   Example (in bash):
+   ```bash
+   export BAYBE_TELEMETRY_ENABLED=false
+   ```
+
+2. **Uninstall Telemetry Packages:**  
+   You can uninstall internet-related packages such as `opentelemetry*` and its dependencies from your environment. BayBE will still work without them.
+
+3. **VPN Restriction:**  
+   Telemetry is only collected for employees of Merck KGaA, Darmstadt, Germany and its affiliates. For all other users, telemetry is disabled by default and cannot be enabled due to a VPN block.
+
+For more details, you can consult the [BayBE documentation on telemetry environment variables](https://emdgroup.github.io/baybe/stable/userguide/envvars.html#telemetry).",How can I disable all telemetry in BayBE?,By setting the environment variable BAYBE_TELEMETRY_ENABLED to false or off.,"To disable all telemetry in BayBE, set the environment variable BAYBE_TELEMETRY_ENABLED to False or off. You can do this before running your code, for example:
+
+```bash
+export BAYBE_TELEMETRY_ENABLED=False
+```
+or
+```bash
+export BAYBE_TELEMETRY_ENABLED=off
+```
+
+This will turn off all telemetry collection. For additional assurance, you can also uninstall internet-related packages such as opentelemetry and its dependencies, but this is not required—setting the environment variable is sufficient."
+124,0.7723659,0.643083,How can I add measurements to the campaigns database?,"
+You can add measurements to the campaignÂs database using the `add_measurements` method.","You can add measurements to the campaign’s database using the add_measurements method of the Campaign object. This method expects a DataFrame containing the values of the experimental parameters and the corresponding target measurements.
+
+Here’s how you can do it:
+
+1. **Obtain recommendations** (optional, for new experiments):
+   ```python
+   df = campaign.recommend(batch_size=3)
+   ```
+
+2. **Add your measured target values** to the DataFrame:
+   ```python
+   df[""Target""] = [value1, value2, value3]  # Replace with your actual measurements
+   ```
+
+3. **Add the measurements to the campaign:**
+   ```python
+   campaign.add_measurements(df)
+   ```
+
+You can add measurements at any time during the campaign lifecycle, and you can add them multiple times before requesting new recommendations. The DataFrame you provide should include all relevant parameter columns and the target measurement columns.
+
+**Example:**
+```python
+rec = campaign.recommend(batch_size=3)
+rec[""Yield""] = [79.8, 54.1, 59.4]
+campaign.add_measurements(rec)
+```
+
+This updates the campaign’s database with the new measurements, allowing BayBE to refine its recommendations in subsequent iterations.",How do you add new experimental measurements to a BayBE campaign?,By using the add_measurements method on the campaign object.,"To add new experimental measurements to a BayBE campaign, you use the `add_measurements` method of the `Campaign` object. This method expects a pandas `DataFrame` containing the values of the experimental parameters and the corresponding target measurements.
+
+**Typical workflow:**
+
+1. **Collect your measurements**: After running your experiments (which may or may not be based on BayBE’s recommendations), prepare a DataFrame with the parameter values and the measured targets.
+
+2. **Add the measurements**: Pass this DataFrame to the `add_measurements` method of your campaign.
+
+**Example:**
+
+```python
+# Suppose df contains your experimental settings and measured targets
+df[""Yield""] = [79.8, 54.1, 59.4]  # Add your measurement column(s)
+campaign.add_measurements(df)
+```
+
+- The DataFrame should have columns for all experimental parameters and at least one column for the target(s).
+- The measurements do **not** have to correspond to previous recommendations; you can add any data at any time and in any order.
+
+**Summary:**  
+Prepare a DataFrame with your experimental parameters and target measurements, then call `campaign.add_measurements(your_dataframe)`. This updates the campaign’s internal database and allows BayBE to refine future recommendations."
+125,0.76235795,0.4563797,Can I transform BayBE objects into a different format?,Most BayBE objects can be conveniently serialized into an equivalent JSON representation.,"Yes, you can transform BayBE objects into different formats. BayBE provides a sophisticated serialization engine that allows you to convert its objects into basic types and reassemble them later. Most BayBE objects can be serialized into a JSON representation using their `to_json` method, and then deserialized back using the `from_json` method of the corresponding class. This enables you to:
+
+- Persist objects for later use
+- Transmit and process objects outside the Python ecosystem
+- Interact with APIs and databases
+- Write and read configuration files
+
+Additionally, BayBE handles complex objects such as pandas DataFrames by converting them to a compressed binary format during serialization. If you prefer a more human-readable format, you can use alternative constructors (like `DataFrame.from_records`) in your configuration strings.
+
+In summary, BayBE supports flexible transformation of its objects into formats such as JSON and provides tools to handle both machine-friendly and human-readable representations.",How can BayBE objects be serialized and deserialized to and from JSON?,By using the to_json method to serialize an object to a JSON string and the from_json method of the corresponding class to deserialize it back.,"BayBE objects can be serialized and deserialized to and from JSON using built-in methods and flexible configuration strings. Here’s how the process works:
+
+**Serialization to JSON:**
+
+- Most BayBE objects provide a `to_json` method, which converts the object into a JSON string representation.
+- This JSON string can be stored, transmitted, or used outside Python.
+
+**Deserialization from JSON:**
+
+- To reconstruct the object, use the class’s `from_json` method, passing in the JSON string. This creates an equivalent copy of the original object.
+
+**Example:**
+```python
+from baybe.parameters import CategoricalParameter
+
+parameter = CategoricalParameter(name=""Setting"", values=[""low"", ""high""])
+json_string = parameter.to_json()
+reconstructed = CategoricalParameter.from_json(json_string)
+assert parameter == reconstructed
+```
+
+**Manual Configuration Strings:**
+
+- You can also manually create JSON configuration strings that match the constructor arguments of the BayBE object.
+- For example:
+    ```python
+    parameter_json = """"""
+    {
+        ""name"": ""Setting"",
+        ""values"": [""low"", ""high""]
+    }
+    """"""
+    via_json = CategoricalParameter.from_json(parameter_json)
+    ```
+
+**Nesting and Hierarchies:**
+
+- BayBE supports nested objects in JSON, allowing you to represent complex object hierarchies (e.g., a SearchSpace with multiple Parameters).
+
+**Automatic Field Conversion:**
+
+- BayBE applies automatic conversion for certain fields:
+    - Intervals can be specified directly as lists (e.g., `""bounds"": [0, 1]`).
+    - Enum fields can be given as strings (e.g., `""mode"": ""MAX""`).
+
+**Special Handling for DataFrames:**
+
+- When serializing objects containing pandas DataFrames, BayBE uses a binary, compressed format for exact restoration.
+- Alternatively, you can use DataFrame constructors (like `from_records`) in your configuration JSON for better readability.
+
+**Summary Table:**
+
+| Task                | Method                        | Example                                 |
+|---------------------|------------------------------|-----------------------------------------|
+| Serialize to JSON   | `object.to_json()`            | `json_str = obj.to_json()`              |
+| Deserialize from JSON | `Class.from_json(json_str)` | `obj = Class.from_json(json_str)`       |
+| Manual config       | JSON string + `from_json`     | See above examples                      |
+| Nested objects      | Nested JSON                   | See ""Nesting objects"" example           |
+| DataFrames          |"
